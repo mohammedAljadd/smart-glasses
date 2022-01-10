@@ -35,7 +35,9 @@ OUASSOU Ahmed
 
 **1st stage :**
 
-        The first stage of our project is to expose the three deep learning models as a Restful API so that the user (Raspberry PI model 3) gets the prediction after sending an HTTP request containing an image.
+        The first stage of our project is to expose the three deep learning models as a Restful API 
+        so that the user (Raspberry PI model 3) gets the prediction after sending an HTTP request
+        containing an image.
 
 *In this stage we will build the following models :*
 
@@ -52,7 +54,8 @@ OUASSOU Ahmed
 
 *In this stage we will build the following models :*
 
-        - YOLOv4 that classify 11 classes (Laptop, Pen, Keyboard, Phone, Computer mouse, Person, Board, Bottle, Key, Book, Cars)
+        - YOLOv4 that classify 11 classes (Laptop, Pen, Keyboard, Phone, Computer mouse, Person, 
+        Board, Bottle, Key, Book, Cars)
         - Facial recognition (multi face identification).
 
 
