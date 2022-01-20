@@ -50,7 +50,26 @@ class Facial_Recognition(Resource):
 
 class Object_Detection(Resource):
     def post(self):
-        return {"msg": "Object_Detection"}
+        if request.files:
+            from app import app
+            empty_folder(app.config['IMAGE_FOLDER'])
+            image = request.files["image"] 
+            image_path = f"{app.config['IMAGE_FOLDER']}"+"/"+image.filename
+            image.save(image_path)
+
+            # Yolo object detection
+            classes = object_detection(image_path)
+
+            # Describe the content of the image for the user (blind)
+            describtion  = results(model="yolo", classes=classes)
+
+            # Create an audio file from the previous text
+            audio = generate_audio(describtion)
+            #return send_from_directory(directory=app.config['AUDIO_FOLDER'], path="audio.mp3", as_attachment=True)
+            response = {
+                "result": describtion
+            }
+            return describtion
 
 class Text_recognition(Resource):
     def post(self):
