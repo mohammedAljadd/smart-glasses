@@ -9,8 +9,14 @@ class DevelopmentConfig(object):
     
     APP = "run.py"
 
-    MODEL_FOLDER = os.path.join(app.root_path)+"/static/deep_learning_models/"
+    SCM_DO_BUILD_DURING_DEPLOYMENT = True
+
+    YOLO_FOLDER = os.path.join(os.path.dirname(__file__), "app/static\\deep_learning_models\\YOLOv4")
+
+    FACE_RECOGNITION_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\deep_learning_models\\Face_recognition")
     
-    IMAGE_FOLDER = os.path.join(app.root_path)+"/static/image/"
-    
-    AUDIO_FOLDER = os.path.join(app.root_path)+"/static/audio/"
+    IMAGE_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\image\\")
+  
+    AUDIO_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\audio\\")
+
+    CASCADE_FOLDER =  os.path.join(os.path.dirname(__file__), "app\\static\\deep_learning_models\\Face_recognition\\cascades\\data")
