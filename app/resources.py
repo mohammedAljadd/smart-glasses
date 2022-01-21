@@ -13,7 +13,12 @@ class Facial_Recognition(Resource):
         if request.files:
             
             from app import app
+
+            # Upload folder for images
             imgs_path = app.config['IMAGE_FOLDER']
+
+            # Image size that the model was trained on
+            IMG_SIZE = app.config['IMG_SIZE'] 
 
             # Face cascade xml file
             cascades = app.config['CASCADE_FOLDER']
@@ -36,7 +41,6 @@ class Facial_Recognition(Resource):
             faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
             for (x, y, w, h) in faces:
                 face = gray_image[y:y+h, x:x+w]
-                IMG_SIZE = 128 
                 face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
                 face_expanded = np.expand_dims(face_resized, axis=0)
 

@@ -20,3 +20,5 @@ class DevelopmentConfig(object):
     AUDIO_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\audio\\")
 
     CASCADE_FOLDER =  os.path.join(os.path.dirname(__file__), "app\\static\\deep_learning_models\\Face_recognition\\cascades\\data")
+
+    IMG_SIZE = 64
