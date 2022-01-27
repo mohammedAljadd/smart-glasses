@@ -2,7 +2,6 @@ from importlib.resources import path
 from unicodedata import name
 from urllib import response
 from flask_restful import  Resource
-from app.utils import *
 from flask import request
 import cv2
 import pytesseract
