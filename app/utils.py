@@ -35,28 +35,16 @@ def get_model():
 def predict(image, threshold):
     model = get_model()
     prediction = model.predict(image)
-    i  =  np.array(np.where(((prediction >= threshold).astype('int32')[0]) == 1))[0]
-    who = ""
-    
-    if i.shape == (0,):
-        who = "Person not recognized"
+    index = np.argmax(prediction[0])
+    probabilty = float(format(max(prediction[0]*100), ".3f"))
+    result = ""
+    CATEGORIES = ["aljadd", "nossaiba", "nouhaila", "langze", "unknown"]
+    if probabilty < threshold*100:
+        result = "I can not recognize this person"
     else:
-        
-        if i[0] == 0:
-            who = "AL JADD"
-
-        elif i[0] == 1:
-            who = "Nossaiba"
-
-        elif i[0] == 2:
-            who = "EL NABAOUI"
-
-        elif i[0] == 3:
-            who = "YE Langze"
-        else:
-            pass
-
-    return who
+        title = f"It's {probabilty}% {CATEGORIES[index]} "
+ 
+    return title
 
 
 
