@@ -74,4 +74,4 @@ OUASSOU Ahmed
 # Project report in french
 
 
-- The project report is written in Latex. Here is the link to overleaf : <a href="https://www.overleaf.com/project/61e4b995b878196c857a475c">Link</a>
+- The project report is written in Latex. Here is the link to overleaf : <a href="https://www.overleaf.com/project/61e4b995b878196c857a475c" target="_blank">Link</a>
