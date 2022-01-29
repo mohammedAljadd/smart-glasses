@@ -1,6 +1,6 @@
 # Overview
 
-Hello everyone, this is a project I am working on with the members of my team in our engineering school [INSA Rennes](https://www.insa-rennes.fr/). The idea is to design and build smart glasses for blind people. We named our product “iEars” because the user uses his ears to sense the environment.
+Hello everyone, this is a project we are working as a team of 7 members in our engineering school [INSA Rennes](https://www.insa-rennes.fr/). The idea is to design and build smart glasses for blind people. We named our product ***iEars*** because the user uses his ears to sense the environment.
 
 The three main services of our product are:
     
@@ -63,8 +63,15 @@ OUASSOU Ahmed
 *NB : The two stages are independents. If we did not get what we expect in the second step, we will had already implemented our RestAPI. For each stage we will create a branch.* 
 
 
-# How our product will work?
+# Product demonstration
 
 
 
 # How to explore this github repository?
+
+
+
+# Project report in french
+
+
+- The project report is written in Latex. Here is the link to overleaf : <a href="https://www.overleaf.com/project/61e4b995b878196c857a475c">Link</a>
