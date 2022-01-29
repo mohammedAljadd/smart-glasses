@@ -33,18 +33,17 @@ def get_model():
 
     
 def predict(image, threshold):
+    from app import app
     model = get_model()
     prediction = model.predict(image)
     index = np.argmax(prediction[0])
     probabilty = float(format(max(prediction[0]*100), ".3f"))
-    result = ""
-    CATEGORIES = ["aljadd", "nossaiba", "nouhaila", "langze", "unknown"]
+
     if probabilty < threshold*100:
-        result = "I can not recognize this person"
-    else:
-        title = f"It's {probabilty}% {CATEGORIES[index]} "
- 
-    return title
+        # The 6th category when probability is lower than the threshold
+        return 5
+
+    return index
 
 
 
@@ -177,3 +176,25 @@ def empty_folder(path):
     for img in os.listdir(path):
         filename = os.path.join(path,img)
         os.remove(filename)
+
+
+def result_face_recognition(predictions, CATEGORIES):
+    result = "There is "
+    lenght = len(predictions)
+    if lenght == 0:
+        result += "no face"
+
+    elif lenght == 1:
+        result += f"{CATEGORIES[predictions]}"
+        
+    elif lenght == 2:
+            result += f"{CATEGORIES[predictions[0]]} and {CATEGORIES[predictions[1]]}"
+    else:
+        i = 0
+        for p in predictions:
+            if i < lenght-1:
+                result += f"{CATEGORIES[p]}, "
+            else:
+                result += f"and {CATEGORIES[p]}."
+            i += 1
+    return result

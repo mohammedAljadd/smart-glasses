@@ -7,6 +7,7 @@ from flask import request
 import cv2
 import pytesseract
 import pathlib
+import tensorflow as tf
 
 class Facial_Recognition(Resource):
     def post(self):
@@ -19,6 +20,8 @@ class Facial_Recognition(Resource):
 
             # Image size that the model was trained on
             IMG_SIZE = app.config['IMG_SIZE'] 
+
+            CATEGORIES = app.config["CATEGORIES"]
 
             # Face cascade xml file
             cascades = app.config['CASCADE_FOLDER']
@@ -36,7 +39,9 @@ class Facial_Recognition(Resource):
             # Grayscale
             gray_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
-            
+            # Detected classes indexes
+            predictions = []
+
             # Detect the face with face_cascade
             faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
             for (x, y, w, h) in faces:
@@ -44,13 +49,14 @@ class Facial_Recognition(Resource):
                 face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
                 face_expanded = np.expand_dims(face_resized, axis=0)
 
-                # Rescale the image, the model was trained on scaled images
-                face_input = face_expanded/255.0
+                # Normalize the image, the model was trained on normalized images
+                face_input = tf.keras.utils.normalize(face_expanded, axis=1)
 
                 # Make prediction
-                prediction = predict(face_input, threshold=0.6)
-            
-            return prediction
+                index = predict(face_input, threshold=0.6)
+                predictions.append(index)
+             
+            return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES)
 
 class Object_Detection(Resource):
     def post(self):
