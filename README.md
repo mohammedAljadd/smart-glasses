@@ -51,6 +51,7 @@ OUASSOU Ahmed
         In the second stage we will use sockets for real-time predictions. But we will keep the image
         processing mode if the user switch to it. For text detection, we will not integrate it in this
         mode (real-time).
+- Link of the second version : <a href="https://github.com/mohammedAljadd/iEars/tree/main/2nd%20version" target="_blank">2nd version</a>.
 
 *In this stage we will build the following models :*
 
@@ -70,8 +71,25 @@ OUASSOU Ahmed
 # How to explore this github repository?
 
 
+# Deep learning models
+### 1-Facial recognition:
+        1- CNN:
+
+        2- LBH:
+
+### 2-Text recognition:
+        1- Tesseract:
+
+        2- Handwritting recognition:
+
+### 3-Object detection:
+
+
 
 # Project report in french
 
 
 - The project report is written in Latex. Here is the link to overleaf : <a href="https://www.overleaf.com/project/61e4b995b878196c857a475c" target="_blank">Link</a>
+
+
+
