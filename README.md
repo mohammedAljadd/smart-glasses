@@ -91,5 +91,7 @@ OUASSOU Ahmed
 
 - The project report is written in Latex. Here is the link to overleaf : <a href="https://www.overleaf.com/project/61e4b995b878196c857a475c" target="_blank">Link</a>
 
+<a href="https://github.com/mohammedAljadd/iEars/tree/main/Project%20report%20in%20Latex" target="_blank">Source files Latex.</a>
+
 
 
