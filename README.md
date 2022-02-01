@@ -81,13 +81,13 @@ OUASSOU Ahmed
         1- Tesseract:
 
         2- Handwritting recognition:
+ <a href="https://www.kaggle.com/mohammedaljadd/handwritten-characters-recognition"> Kaggle Link of handwritten text recognition.</a>
 
 ### 3-Object detection:
 
 
 
 # Project report in french
-
 
 - The project report is written in Latex. Here is the link to overleaf : <a href="https://www.overleaf.com/project/61e4b995b878196c857a475c" target="_blank">Link</a>
 
