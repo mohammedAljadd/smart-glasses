@@ -1,0 +1,105 @@
+\documentclass{report}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{afterpage}
+\usepackage{fancyhdr}
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{5}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[french]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with`a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\begin{document}
+
+%	HEADER -----------------------------------------------------------
+
+\begin{center}
+%	HEADING & LOGO
+
+\Huge{L’Institut National des Sciences Appliquées de Rennes}\\[.5cm]
+\huge{INSA Rennes}\\[.5cm]
+
+\Large
+Électronique et Communication (E\&T)\\[1cm] 
+\includegraphics[width=14cm, height=7cm]{4-Images/insa_logo.jpg}\\[0.5cm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%\includegraphics[width=1cm, height=0.7cm]{4-Images/smart.png}\\[2cm]
+
+%	TITLE 
+\sffamily
+\noindent\rule{15cm}{2pt}\\[0.4cm]
+\textbf{\Huge Smart Glasses for blind people}\\[0.2cm] 
+\noindent\rule{15cm}{2pt}\\[1cm]
+%	AUTHORS & SUPERVISOR
+\large
+\begin{minipage}[t]{.5\textwidth}
+\begin{flushleft}
+\emph{\textbf{\Large Membres:}}\\
+AL JADD Mohammed (coordinateur)\\
+EL-ASRI Nossaiba\\
+YE Langze\\
+EL NABAOUI Nouhaila\\
+AHMED Ouassou \\
+AIT JILALI Nouhaila\\
+BENJELLOUNE Boutaina\\
+\end{flushleft}
+
+\end{minipage}\hfill\begin{minipage}[t]{.4\textwidth}
+
+\begin{flushright}
+\emph{\textbf{\Large Encadrants:}}
+
+Christophe Lemoine\\
+Fabienne Nouvel\\
+\end{flushright}
+\end{minipage}
+\\[1cm]
+
+%	DATE ------------------------------------------------------
+{\today}\\[3cm]
+\end{center}
+\afterpage{\null\newpage}
+
+
+
+%	Abstract ---------------------------------------------------------------------------------------------------------
+\pagebreak 
+\pagestyle{fancy}
+\fancyhead{}
+\lhead{Résumé}
+
+\input{1-Abstract/abstract}
+\pagebreak 
+
+
+
+%	Chapters --------------------------------------------------
+
+\input{2-Chapters/chapters}
+
+\printbibliography
+
+
+
+
+%	Summary --------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+\end{document}
