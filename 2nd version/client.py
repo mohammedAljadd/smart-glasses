@@ -19,15 +19,31 @@ asked_streaming = client_socket.recv(256).decode('utf-8')
 
 # Start streaming --------------------------------------------------------------------------------------
 cap = cv2.VideoCapture(0)
+
+Started_prediction = False
 while True:
+	if Started_prediction:
+		prediction = client_socket.recv(256).decode('utf-8')
+		print(prediction)
+		
 	ret,photo = cap.read()
 	cv2.imshow('Client camera', photo)
 	ret,buffer = cv2.imencode(".jpg",photo,[int(cv2.IMWRITE_JPEG_QUALITY),30])
 	x_as_bytes = pickle.dumps(buffer)
 	client_socket.sendto((x_as_bytes),(host_ip, port))
+	Started_prediction = True
+	'''
+	if client_socket.recv(256).decode('utf-8'):
+		prediction = client_socket.recv(256).decode('utf-8')
+		print(prediction)
+	'''
+	
 	key = cv2.waitKey(1) & 0xFF
 	if key  == ord('q'):
 		break
+
+	
+
 cv2.destroyAllWindows()
 cap.release()
 

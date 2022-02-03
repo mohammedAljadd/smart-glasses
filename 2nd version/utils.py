@@ -25,4 +25,4 @@ def predict(image, threshold, model):
         # The 6th category when probability is lower than the threshold
         return 5
 
-    return index
+    return index, probabilty

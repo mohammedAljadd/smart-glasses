@@ -3,8 +3,9 @@ from utils import *
 from config_server import *
 import numpy as np
 import tensorflow as tf
+from time import time
 
-
+last_time = time()
 
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 host_name  = socket.gethostname()
@@ -57,20 +58,28 @@ while True:
             # Preprocess the image
             gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             
-            if option == "Facial recognition":
-                # Detect the face with face_cascade
-                faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
-                for (x, y, w, h) in faces:
-                    face = gray_image[y:y+h, x:x+w]
-                    face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
-                    face_expanded = np.expand_dims(face_resized, axis=0)
+            if time() > last_time + 2:
+                if option == "Facial recognition":
+                    # Detect the face with face_cascade
+                    faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
+                    for (x, y, w, h) in faces:
+                        face = gray_image[y:y+h, x:x+w]
+                        face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
+                        face_expanded = np.expand_dims(face_resized, axis=0)
 
-                    # Normalize the image, the model was trained on normalized images
-                    face_input = tf.keras.utils.normalize(face_expanded, axis=1)
+                        # Normalize the image, the model was trained on normalized images
+                        face_input = tf.keras.utils.normalize(face_expanded, axis=1)
 
-                    # Make prediction
-                    index = predict(face_input, threshold=0.6, model=model)
-                    print(CATEGORIES[index])
+                        # Make prediction
+                        index, probabilty = predict(face_input, threshold=0.6, model=model)
+                        
+                        
+                        print(f"{CATEGORIES[index]} {probabilty}%")
+
+                        # Send back prediction to client
+                        client_socket.send(bytes(f"{CATEGORIES[index]}", 'utf-8'))
+
+                last_time = time()
 
             
             cv2.imshow('server', gray_image) #to open image
