@@ -1,10 +1,10 @@
-YOLO_FOLDER = "..app/static/deep_learning_models/YOLOv4"
+YOLO_FOLDER = "../..app/static/deep_learning_models/YOLOv4"
 
-FACE_RECOGNITION_FOLDER = "../app/static/deep_learning_models/Face_recognition"
+FACE_RECOGNITION_FOLDER = "../app/static/deep_learning_models/Face_recognition/cnn_big_model.h5"
 
-IMAGE_FOLDER = "../app/static/image/"
+IMAGE_FOLDER = "../../app/static/image/"
 
-AUDIO_FOLDER = "../app/static/audio/"
+AUDIO_FOLDER = "../../app/static/audio/"
 
 CASCADE_FOLDER =  "../app/static/deep_learning_models/Face_recognition/cascades/data"
 
