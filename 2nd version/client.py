@@ -18,8 +18,18 @@ client_socket.send(bytes("Object detection", 'utf-8'))
 asked_streaming = client_socket.recv(256).decode('utf-8')
 
 # Start streaming --------------------------------------------------------------------------------------
-for i in range(10):
-    client_socket.send(bytes("Streaming", 'utf-8'))
+cap = cv2.VideoCapture(0)
+while True:
+	ret,photo = cap.read()
+	cv2.imshow('streaming',photo)
+	ret,buffer = cv2.imencode(".jpg",photo,[int(cv2.IMWRITE_JPEG_QUALITY),30])
+	x_as_bytes = pickle.dumps(buffer)
+	client_socket.sendto((x_as_bytes),(host_ip, port))
+	key = cv2.waitKey(1) & 0xFF
+	if key  == ord('q'):
+		break
+cv2.destroyAllWindows()
+cap.release()
 
 
 client_socket.close()

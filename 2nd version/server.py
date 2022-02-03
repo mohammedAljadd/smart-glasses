@@ -42,9 +42,16 @@ while True:
             model = load_text_model()
             print("Text model is loaded")
         
-        for i in range(10):
-             streaming = client_socket.recv(256).decode('utf-8')
-             print(f"{streaming}\n")
+        while True:
+            x = client_socket.recvfrom(1000000)
+            clientip = x[1][0]
+            data=x[0]
+            data=pickle.loads(data)
+            data = cv2.imdecode(data, cv2.IMREAD_COLOR)
+            cv2.imshow('server', data) #to open image
+            if cv2.waitKey(10) == 13:
+                break
+        cv2.destroyAllWindows()
         
 
         
