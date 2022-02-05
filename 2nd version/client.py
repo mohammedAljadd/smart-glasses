@@ -1,14 +1,18 @@
 import socket,cv2, pickle,struct
+from time import sleep
 
 # create socket
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+client_socket2 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
 host_name  = socket.gethostname()
 host_ip = socket.gethostbyname(host_name)
 port = 9999
-
+port2 = 10210
 
 # Connect to the server --------------------------------------------------------------------------------
-client_socket.connect((host_ip,port)) # a tuple
+client_socket.connect((host_ip, port)) # a tuple
+client_socket2.connect((host_ip, port2)) # a tuple
 
 
 # Send option ------------------------------------------------------------------------------------------
@@ -22,9 +26,6 @@ cap = cv2.VideoCapture(0)
 
 Started_prediction = False
 while True:
-	if Started_prediction:
-		prediction = client_socket.recv(256).decode('utf-8')
-		print(prediction)
 		
 	ret,photo = cap.read()
 	cv2.imshow('Client camera', photo)
@@ -32,11 +33,10 @@ while True:
 	x_as_bytes = pickle.dumps(buffer)
 	client_socket.sendto((x_as_bytes),(host_ip, port))
 	Started_prediction = True
-	'''
-	if client_socket.recv(256).decode('utf-8'):
-		prediction = client_socket.recv(256).decode('utf-8')
-		print(prediction)
-	'''
+
+	#prediction = client_socket2.recv(256).decode('utf-8')
+	#print(prediction)
+	
 	
 	key = cv2.waitKey(1) & 0xFF
 	if key  == ord('q'):
