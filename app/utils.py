@@ -1,6 +1,7 @@
 from email.mime import image
 import imp
 from pyexpat import model
+from sre_parse import CATEGORIES
 from statistics import mode
 import numpy as np
 import cv2
@@ -40,8 +41,8 @@ def predict(image, threshold):
     probabilty = float(format(max(prediction[0]*100), ".3f"))
 
     if probabilty < threshold*100:
-        # The 6th category when probability is lower than the threshold
-        return 5
+        # The 4th category when probability is lower than the threshold
+        return 4
 
     return index
 
@@ -178,26 +179,45 @@ def empty_folder(path):
         os.remove(filename)
 
 
-def result_face_recognition(predictions, CATEGORIES):
+def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_faces=0):
 
-    lenght = len(predictions)
-    if lenght == 1 and predictions[0] == 5:
+    if number_of_faces == 0 and predictions[0] == 5:
         result = "il n'y a personne."
 
     else:
+
+        # Remove duplicates
+        predictions_no_duplicates = []
+        for i in predictions:
+            if i not in predictions_no_duplicates:
+                predictions_no_duplicates.append(i)
+
+
+        # Count occurences
+        occurences = []
+        for p in predictions_no_duplicates:
+            occurence = predictions.tolist().count(p)
+            occurences.append(occurence)
+
+        def replace(i):
+            if i == 1:
+                return ""
+            else:
+                return str(i)
+
         result = "Il y a "
-        if lenght == 1:
-            result += f"{CATEGORIES[predictions[0]]}"
+        if number_of_faces == 1:
+            result += f"{replace(occurences[0])}{CATEGORIES[predictions[0]]}"
             
-        elif lenght == 2:
-                result += f"{CATEGORIES[predictions[0]]} et {CATEGORIES[predictions[1]]}"
+        elif number_of_faces == 2:
+            result += f"{replace(occurences[0])}{CATEGORIES[predictions[0]]} et {replace(occurences[1])}{CATEGORIES[predictions[1]]}"
         
         else:
             i = 0
             for p in predictions:
-                if i < lenght-1:
-                    result += f"{CATEGORIES[p]}, "
+                if i < number_of_faces-1:
+                    result += f"{replace(occurences[p])}{CATEGORIES[p]}, "
                 else:
-                    result += f"et {CATEGORIES[p]}."
+                    result += f"et {replace(occurences[p])}{CATEGORIES[p]}."
                 i += 1
     return result

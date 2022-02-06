@@ -43,8 +43,11 @@ class Facial_Recognition(Resource):
             predictions = []
 
             # Detect the face with face_cascade
-            faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
+            faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.5, minNeighbors=8)
+            
             if len(faces) != 0:
+                
+                
                 for (x, y, w, h) in faces:
                     face = gray_image[y:y+h, x:x+w]
                     face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
@@ -54,14 +57,21 @@ class Facial_Recognition(Resource):
                     face_input = tf.keras.utils.normalize(face_expanded, axis=1)
 
                     # Make prediction
-                    index = predict(face_input, threshold=0.8)
+                    index = predict(face_input, threshold=0.7)
                     predictions.append(index)
-            
-            else:
-                predictions.append([5])
+                    print(index)
+                #predictions = list(set(predictions))
+                # Count number faces
+                predictions = np.array(predictions) #.reshape(predictions.shape[0])
+                i = predictions.shape[0]
                 
-            predictions = predictions[0]
-            return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES)
+
+                return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES, number_of_faces=i)
+
+            return result_face_recognition(CATEGORIES=CATEGORIES)
+            
+            #predictions = predictions#.tolist()
+            
 # Code pour faire Prédiction visage (le code est caché puisqu'il est long)
 
 class Object_Detection(Resource):
