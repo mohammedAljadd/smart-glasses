@@ -197,7 +197,11 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
         occurences = []
         for p in predictions_no_duplicates:
             occurence = predictions.tolist().count(p)
-            occurences.append(occurence)
+            # Do not consider duplicates of faces of known people, because it's due to face cascade errors
+            if p not in [0, 1, 2, 3]:
+                occurences.append(occurence)
+            else:
+                occurences.append(1)
 
         def replace(i):
             if i == 1:

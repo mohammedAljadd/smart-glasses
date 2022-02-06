@@ -59,7 +59,6 @@ class Facial_Recognition(Resource):
                     # Make prediction
                     index = predict(face_input, threshold=0.7)
                     predictions.append(index)
-                    print(index)
                 #predictions = list(set(predictions))
                 # Count number faces
                 predictions = np.array(predictions) #.reshape(predictions.shape[0])
@@ -67,7 +66,7 @@ class Facial_Recognition(Resource):
                 
 
                 return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES, number_of_faces=i)
-
+     
             return result_face_recognition(CATEGORIES=CATEGORIES)
             
             #predictions = predictions#.tolist()
