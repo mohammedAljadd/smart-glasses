@@ -208,16 +208,17 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
         result = "Il y a "
         if number_of_faces == 1:
             result += f"{replace(occurences[0])}{CATEGORIES[predictions[0]]}"
-            
+
         elif number_of_faces == 2:
-            result += f"{replace(occurences[0])}{CATEGORIES[predictions[0]]} et {replace(occurences[1])}{CATEGORIES[predictions[1]]}"
-        
+            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]} et {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
+
         else:
             i = 0
-            for p in predictions:
+            for p in predictions_no_duplicates:
                 if i < number_of_faces-1:
-                    result += f"{replace(occurences[p])}{CATEGORIES[p]}, "
+                    print(i)
+                    result += f"{replace(occurences[i])} {CATEGORIES[p]}, "
                 else:
-                    result += f"et {replace(occurences[p])}{CATEGORIES[p]}."
+                    result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
                 i += 1
     return result
