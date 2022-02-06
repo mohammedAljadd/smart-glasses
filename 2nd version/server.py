@@ -12,7 +12,7 @@ server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 server_socket2 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 host_name  = socket.gethostname()
-host_ip = socket.gethostbyname(host_name)
+host_ip = '192.168.43.203' #socket.gethostbyname(host_name)
 port = 9999
 port2 = 10210
 socket_address = (host_ip,port)

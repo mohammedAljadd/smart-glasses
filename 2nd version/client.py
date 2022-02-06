@@ -23,20 +23,24 @@ asked_streaming = client_socket.recv(256).decode('utf-8')
 
 # Start streaming --------------------------------------------------------------------------------------
 cap = cv2.VideoCapture(0)
-
+IMG_SIZE = 288
 Started_prediction = False
 while True:
 		
 	ret,photo = cap.read()
 	cv2.imshow('Client camera', photo)
-	ret,buffer = cv2.imencode(".jpg",photo,[int(cv2.IMWRITE_JPEG_QUALITY),30])
+	#photo = cv2.resize(photo, (IMG_SIZE, IMG_SIZE))
+	ret, buffer = cv2.imencode(".jpg",photo,[int(cv2.IMWRITE_JPEG_QUALITY),30])
 	x_as_bytes = pickle.dumps(buffer)
 	client_socket.sendto((x_as_bytes),(host_ip, port))
 	Started_prediction = True
-
-	#prediction = client_socket2.recv(256).decode('utf-8')
-	#print(prediction)
 	
+	try:
+		prediction = client_socket2.recv(256).decode('utf-8')
+		print(prediction)
+		sleep(0.05)
+	except Exception:
+		print("No message is received")
 	
 	key = cv2.waitKey(1) & 0xFF
 	if key  == ord('q'):

@@ -21,7 +21,6 @@ class DevelopmentConfig(object):
 
     CASCADE_FOLDER =  os.path.join(os.path.dirname(__file__), "app\\static\\deep_learning_models\\Face_recognition\\cascades\\data")
 
-    IMG_SIZE = 64
+    IMG_SIZE = 32
 
-    # The 6th category used when probability is lower than the threshold
-    CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "an unknown person", "I can not recognize this person"]
+    CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "une personne inconnue", "il n'y a personne"]

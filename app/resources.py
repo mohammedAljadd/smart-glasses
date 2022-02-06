@@ -44,19 +44,25 @@ class Facial_Recognition(Resource):
 
             # Detect the face with face_cascade
             faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
-            for (x, y, w, h) in faces:
-                face = gray_image[y:y+h, x:x+w]
-                face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
-                face_expanded = np.expand_dims(face_resized, axis=0)
+            if len(faces) != 0:
+                for (x, y, w, h) in faces:
+                    face = gray_image[y:y+h, x:x+w]
+                    face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
+                    face_expanded = np.expand_dims(face_resized, axis=0)
 
-                # Normalize the image, the model was trained on normalized images
-                face_input = tf.keras.utils.normalize(face_expanded, axis=1)
+                    # Normalize the image, the model was trained on normalized images
+                    face_input = tf.keras.utils.normalize(face_expanded, axis=1)
 
-                # Make prediction
-                index = predict(face_input, threshold=0.6)
-                predictions.append(index)
-             
+                    # Make prediction
+                    index = predict(face_input, threshold=0.8)
+                    predictions.append(index)
+            
+            else:
+                predictions.append([5])
+                
+            predictions = predictions[0]
             return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES)
+# Code pour faire Prédiction visage (le code est caché puisqu'il est long)
 
 class Object_Detection(Resource):
     def post(self):
@@ -80,6 +86,7 @@ class Object_Detection(Resource):
                 "result": describtion
             }
             return describtion
+# Code pour faire Prédiction d'objets (le code est caché)
 
 class Text_recognition(Resource):
     def post(self):
@@ -103,6 +110,6 @@ class Text_recognition(Resource):
                 return {"result": result}
             else:
                 return {"result": "No text detected"}
-            
+# Code pour faire Prédiction de texte (le code est caché)
 
     

@@ -179,22 +179,25 @@ def empty_folder(path):
 
 
 def result_face_recognition(predictions, CATEGORIES):
-    result = "There is "
-    lenght = len(predictions)
-    if lenght == 0:
-        result += "no face"
 
-    elif lenght == 1:
-        result += f"{CATEGORIES[predictions]}"
-        
-    elif lenght == 2:
-            result += f"{CATEGORIES[predictions[0]]} and {CATEGORIES[predictions[1]]}"
+    lenght = len(predictions)
+    if lenght == 1 and predictions[0] == 5:
+        result = "il n'y a personne."
+
     else:
-        i = 0
-        for p in predictions:
-            if i < lenght-1:
-                result += f"{CATEGORIES[p]}, "
-            else:
-                result += f"and {CATEGORIES[p]}."
-            i += 1
+        result = "Il y a "
+        if lenght == 1:
+            result += f"{CATEGORIES[predictions[0]]}"
+            
+        elif lenght == 2:
+                result += f"{CATEGORIES[predictions[0]]} et {CATEGORIES[predictions[1]]}"
+        
+        else:
+            i = 0
+            for p in predictions:
+                if i < lenght-1:
+                    result += f"{CATEGORIES[p]}, "
+                else:
+                    result += f"et {CATEGORIES[p]}."
+                i += 1
     return result
