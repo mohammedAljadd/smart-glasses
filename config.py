@@ -23,4 +23,4 @@ class DevelopmentConfig(object):
 
     IMG_SIZE = 32
 
-    CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "une personne inconnue", "il n'y a personne"]
+    CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "personne inconnue", "il n'y a personne"]

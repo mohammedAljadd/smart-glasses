@@ -213,6 +213,7 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
             result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]} et {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
 
         else:
+            number_of_faces = len(predictions_no_duplicates)
             i = 0
             for p in predictions_no_duplicates:
                 if i < number_of_faces-1:
