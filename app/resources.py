@@ -43,10 +43,9 @@ class Facial_Recognition(Resource):
             predictions = []
 
             # Detect the face with face_cascade
-            faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.5, minNeighbors=8)
+            faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.3, minNeighbors=8)
             
             if len(faces) != 0:
-                
                 
                 for (x, y, w, h) in faces:
                     face = gray_image[y:y+h, x:x+w]
@@ -63,7 +62,6 @@ class Facial_Recognition(Resource):
                 # Count number faces
                 predictions = np.array(predictions) #.reshape(predictions.shape[0])
                 i = predictions.shape[0]
-                
 
                 return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES, number_of_faces=i)
      

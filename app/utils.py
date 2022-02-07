@@ -192,6 +192,7 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
             if i not in predictions_no_duplicates:
                 predictions_no_duplicates.append(i)
 
+        number_of_faces = len(predictions_no_duplicates)
 
         # Count occurences
         occurences = []
@@ -203,6 +204,14 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
             else:
                 occurences.append(1)
 
+
+        # Remove index of "no person is detected"
+        if number_of_faces >=2 and 5 in predictions_no_duplicates:
+            index_no_person = predictions_no_duplicates.index(5)
+            predictions_no_duplicates.pop(index_no_person)
+            occurences.pop(index_no_person)
+            number_of_faces -= 1    
+
         def replace(i):
             if i == 1:
                 return ""
@@ -211,18 +220,20 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
 
         result = "Il y a "
         if number_of_faces == 1:
-            result += f"{replace(occurences[0])}{CATEGORIES[predictions[0]]}"
+            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]}"
 
         elif number_of_faces == 2:
             result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]} et {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
 
         else:
-            number_of_faces = len(predictions_no_duplicates)
+            
             i = 0
             for p in predictions_no_duplicates:
-                if i < number_of_faces-1:
-                    print(i)
-                    result += f"{replace(occurences[i])} {CATEGORIES[p]}, "
+                if i < number_of_faces:
+                    if number_of_faces == 1:
+                        result += f"{replace(occurences[i])} {CATEGORIES[p]}."
+                    else:
+                        result += f"{replace(occurences[i])} {CATEGORIES[p]}, "
                 else:
                     result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
                 i += 1
