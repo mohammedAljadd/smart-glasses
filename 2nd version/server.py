@@ -9,20 +9,17 @@ from time import sleep
 last_time = time()
 
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-server_socket2 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 host_name  = socket.gethostname()
-host_ip = '192.168.43.203' #socket.gethostbyname(host_name)
+host_ip = socket.gethostbyname(host_name)
 port = 9999
 port2 = 10210
 socket_address = (host_ip,port)
 
 # Socket Bind
 server_socket.bind(socket_address)
-server_socket2.bind((host_ip, port2))
 # Socket Listen
 server_socket.listen(5)
-server_socket2.listen(5)
 print("LISTENING AT:",socket_address)
 
 j = 0
@@ -30,7 +27,6 @@ j = 0
 # Socket Accept
 while True:
     client_socket, addr = server_socket.accept()
-    client_socket2, addr = server_socket2.accept()
     
     if client_socket:
         print("Client is connected", addr)
@@ -93,19 +89,17 @@ while True:
                                 # Make prediction -------------------------------------------------------------------------------------
                                 index, probabilty = predict(face_input, threshold=0.6, model=model)
                                 prediction = CATEGORIES[index]
-                                print(f"{prediction} {probabilty}%  {j}")
                             
                             except Exception:
                                 prediction = CATEGORIES[6]
-                                print(f"{prediction} {probabilty}%  {j}")
                             
                             j += 1
 
 
                             # Send back prediction to client ----------------------------------------------------------------------
-                            client_socket2.send(bytes(f"{CATEGORIES[index]}", 'utf-8'))
+                            client_socket.send(bytes(f"{prediction} {probabilty}%", 'utf-8'))
                         else:
-                            client_socket2.send(bytes("No face is detected", 'utf-8'))
+                            client_socket.send(bytes("No face is detected", 'utf-8'))
                 last_time = time()
 
             
