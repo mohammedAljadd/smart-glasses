@@ -26,3 +26,6 @@ def predict(image, threshold, model):
         return 5
 
     return index, probabilty
+
+
+

@@ -36,21 +36,15 @@ while True:
 	ret, buffer = cv2.imencode(".jpg",photo,[int(cv2.IMWRITE_JPEG_QUALITY),30])
 	x_as_bytes = pickle.dumps(buffer)
 	client_socket.sendto((x_as_bytes),(host_ip, port))
-	Started_prediction = True
-	'''
-	try:
-		prediction = client_socket2.recv(256).decode('utf-8')
-		print(prediction)
-		sleep(0.05)
-	except Exception:
-		print("No message is received")
-	'''
-	def recv():
+	
+	# Receive message from server 'Thread'
+	def receive_from_server():
+		import sys
 		while True:
 			data = client_socket.recv(1024).decode('utf-8')
 			if not data: sys.exit(0)
 			print(data)
-	Thread(target=recv).start()
+	Thread(target=receive_from_server).start()
 
 
 	key = cv2.waitKey(1) & 0xFF
