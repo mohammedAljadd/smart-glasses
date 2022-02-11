@@ -14,8 +14,22 @@ port = 9999
 client_socket.connect((host_ip, port)) # a tuple
 
 
+# Get option
+
+option = input("What service you want?\n1-Facial recognition.\n2-Object detection.\n3-Text recognition.\n")
+
+if option == "1":
+	option = "Facial recognition"
+
+elif option == "2":
+	option = "Object detection"
+else:
+	option = "Text recognition"
+
+	
+
 # Send option ------------------------------------------------------------------------------------------
-client_socket.send(bytes("Facial recognition", 'utf-8'))
+client_socket.send(bytes(f"{option}", 'utf-8'))
 
 
 
