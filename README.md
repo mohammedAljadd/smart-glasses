@@ -27,8 +27,6 @@ So, the user has the choice to choose between image processing or real-time proc
 
 YE Langze
 
-BENJELOUN Bouthaina
-
 OUASSOU Ahmed
 
 # Project stages
@@ -81,7 +79,7 @@ OUASSOU Ahmed
         1- Tesseract:
 
         2- Handwritting recognition:
- <a href="https://www.kaggle.com/mohammedaljadd/handwritten-characters-recognition"> Kaggle Link of handwritten text recognition.</a>
+
 
 ### 3-Object detection:
 
