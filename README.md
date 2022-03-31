@@ -39,9 +39,9 @@ OUASSOU Ahmed
 
 *In this stage we will build the following models :*
 
-        - Use Tesseract and train it for handwritting.
+        - Use Tesseract OCR.
         - YOLOv4 for three classes : (Person, Laptop, Phone).
-        - Facial recognition for our group members (one face per image identification).
+        - Facial recognition for our group members with CNN, LBPH.
 
 
 **2nd stage :**
@@ -55,7 +55,7 @@ OUASSOU Ahmed
 
         - YOLOv4 that classify 11 classes (Laptop, Pen, Keyboard, Phone, Computer mouse, Person, 
         Board, Bottle, Key, Book, Cars)
-        - Facial recognition (multi face identification).
+        - Facial recognition with FaceNet.
 
 
 
@@ -74,6 +74,8 @@ OUASSOU Ahmed
         1- CNN:
 
         2- LBH:
+
+        3- FaceNet
 
 ### 2-Text recognition:
         1- Tesseract:
