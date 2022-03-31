@@ -7,7 +7,7 @@ import tensorflow as tf
 from time import time
 from time import sleep
 last_time = time()
-
+font = cv2.FONT_HERSHEY_SIMPLEX
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 host_name  = socket.gethostname()
@@ -51,6 +51,7 @@ while True:
         elif option == "Text recognition":
             model = load_text_model()
             print("Text model is loaded")
+            # Receive image
         
         while True:
 
@@ -99,10 +100,12 @@ while True:
                             # Send back prediction to client ----------------------------------------------------------------------
                             client_socket.send(bytes(f"{prediction} {probabilty}%", 'utf-8'))
                         else:
-                            client_socket.send(bytes("No face is detected", 'utf-8'))
+                            pass
+                            #client_socket.send(bytes("No face is detected", 'utf-8'))
                 last_time = time()
 
-            
+            cv2.putText(gray_image, "Serveur" , (50,50), font, 1, (255, 0, 0), 6,6)
+	
             cv2.imshow('server', gray_image) #to open image
             if cv2.waitKey(10) == 13:
                 break

@@ -3,7 +3,7 @@ from time import sleep
 import sys
 from threading import Thread
 
-# create socket
+# create socket, TCP protocol
 client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 host_name  = socket.gethostname()
@@ -14,9 +14,13 @@ port = 9999
 client_socket.connect((host_ip, port)) # a tuple
 
 
+
+
+
+
 # Get option
 
-option = input("What service you want?\n1-Facial recognition.\n2-Object detection.\n3-Text recognition.\n")
+option = "1"#input("What service you want?\n1-Facial recognition.\n2-Object detection.\n3-Text recognition.\n")
 
 if option == "1":
 	option = "Facial recognition"
@@ -38,13 +42,23 @@ client_socket.send(bytes(f"{option}", 'utf-8'))
 # Receive message where asked to stream
 asked_streaming = client_socket.recv(256).decode('utf-8')
 
+
+# Text with no streaming
+if option == "Text recognition":
+	# Send image
+	pass
+
+
+
 # Start streaming --------------------------------------------------------------------------------------
 cap = cv2.VideoCapture(0)
 IMG_SIZE = 288
 Started_prediction = False
+font = cv2.FONT_HERSHEY_SIMPLEX
 while True:
 		
 	ret,photo = cap.read()
+	cv2.putText(photo, "Client" , (50,50), font, 1, (255, 0, 0), 2,2)
 	cv2.imshow('Client camera', photo)
 	#photo = cv2.resize(photo, (IMG_SIZE, IMG_SIZE))
 	ret, buffer = cv2.imencode(".jpg",photo,[int(cv2.IMWRITE_JPEG_QUALITY),30])
