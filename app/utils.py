@@ -238,3 +238,80 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
                     result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
                 i += 1
     return result
+
+
+# Functions for Handwritting recognition
+
+def getHProjection(image):
+
+    hProjection = np.zeros(image.shape,np.uint8)
+
+    #height and width of image
+
+    (h,w)=image.shape
+
+    #length of array same as height of image
+ 
+    h_ = [0]*h
+
+    #count up the number of white pixels in every line
+
+    for y in range(h):
+
+        for x in range(w):
+
+            if image[y,x] == 255:
+
+                h_[y]+=1
+
+    #draw the horizontal projection 
+
+    for y in range(h):
+
+        for x in range(h_[y]):
+
+            hProjection[y,x] = 255
+
+    ##################################################cv2.imshow('hProjection2',hProjection)
+
+ 
+
+    return h_
+
+ 
+
+def getVProjection(image):
+
+    vProjection = np.zeros(image.shape,np.uint8);
+
+    #heigth and width of image
+
+    (h,w) = image.shape
+
+    #length of array same as width of image
+
+    w_ = [0]*w
+
+    #count up the number of white pixels in every column
+
+    for x in range(w):
+
+        for y in range(h):
+
+            if image[y,x] == 255:
+
+                w_[x]+=1
+
+    #draw the projection vertical
+
+    for x in range(w):
+
+        for y in range(h-w_[x],h):
+
+            vProjection[y,x] = 255
+
+    #cv2.imshow('vProjection',vProjection)
+
+    return w_
+
+ 
