@@ -62,9 +62,9 @@ class Facial_Recognition(Resource):
                 # Count number faces
                 predictions = np.array(predictions) #.reshape(predictions.shape[0])
                 i = predictions.shape[0]
-
+                
                 return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES, number_of_faces=i)
-     
+                
             return result_face_recognition(CATEGORIES=CATEGORIES)
             
             #predictions = predictions#.tolist()

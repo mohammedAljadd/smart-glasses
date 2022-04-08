@@ -124,26 +124,26 @@ def text_translation(text):
 def results(model, classes):
     from collections import Counter
     list_objects_counted = []
-    final_result = "There "
+    final_result = "Il y a "
     if model == "yolo":
         nb_classes = len(classes)
         if nb_classes == 0:
-            return "Nothing is detected"
+            return "Rien n'est détecté"
         elif nb_classes == 1:
-            return f"There is a {classes[0]} in front of you"
+            return f"Il y a {classes[0]} devant vous"
         else:
             result = Counter(classes)
             first = True
             for r in result:
                 if result[r] > 1:
                     if first:
-                        list_objects_counted.append("are "+str(result[r])+" "+r+"s")
+                        list_objects_counted.append("des "+str(result[r])+" "+r+"s")
                         first = False
                     else:
                         list_objects_counted.append(str(result[r])+" "+r+"s")
                 else:
                     if first:
-                        list_objects_counted.append("is "+str(result[r])+" "+r)
+                        list_objects_counted.append(str(result[r])+" "+r)
                         first = False
                     else:
                         list_objects_counted.append(str(result[r])+" "+r)
@@ -154,7 +154,7 @@ def results(model, classes):
                 if i < n-2:
                     final_result += element+", "
                 elif i == n-2:
-                    final_result += element+" and "
+                    final_result += element+" et "
                 else:
                     final_result += element+"."
                 i += 1
