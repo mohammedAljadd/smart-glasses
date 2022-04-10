@@ -1,6 +1,6 @@
 import requests
 import RPi.GPIO as GPIO
-#from audio import generate_audio
+from audio import generate_audio
 
 
 # GPIO configuration
@@ -9,7 +9,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # API ip adress
-BASE = "http://192.168.43.232:5000/"
+BASE = "http://192.168.43.203:5000/"
 
 
 option = 1
@@ -19,13 +19,13 @@ path = ""
 # Wait for push button
 while True:
     if GPIO.input(10) == GPIO.LOW:
-        generate_audio("Button pushed")
-        print("Button pushed")
+        #generate_audio("The button is pushed successfully")
+        print("The button is pushed successfully")
         
         
         # Take a picture
         exec(open("picture.py").read())
-        print("Picture taken")
+        print("The picture is taken successfully")
         
         
         # Choose service
@@ -40,10 +40,12 @@ while True:
         # Send http request
         image = {'image': open('img/picture.jpg', 'rb')}
         r = requests.post(BASE+path, files=image)
-        print("http request sent")
+        print("the http request is sent successfully")
         
         print(r.text)
+        
     break
+    
 
 
 

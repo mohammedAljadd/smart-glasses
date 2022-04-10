@@ -14,6 +14,8 @@ def generate_audio(text):
     )
 
     audio.save("audio/audio.mp3")
+    
+    
     pygame.mixer.init()
     pygame.mixer.music.load("audio/audio.mp3")
     pygame.mixer.music.play()
