@@ -10,8 +10,8 @@ CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "Y
 IMG_SIZE = 32
 
 # Image path
-image_path = "img/picture.jpg"
-
+#image_path = "img/picture.jpg"
+image_path = "img/testocr.png"
 
 # Face cascade xml file
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")

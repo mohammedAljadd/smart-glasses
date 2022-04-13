@@ -66,7 +66,7 @@ while True:
                     result = "No text detected"
 
                 # Display result
-                print(result)
+                print("Here is your result :"+result)
                 generate_audio(result)
 
 
@@ -74,10 +74,10 @@ while True:
                 model = get_model(path)
                 if path == "facialrecognition":
                     print(facial_recognition(model=model, threshold=0.7))
-                
-                
+            
                 
                 else:
+                    # Object
                     pass
 
             
