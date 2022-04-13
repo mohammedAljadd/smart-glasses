@@ -47,7 +47,7 @@ def get_model(service):
         model = keras.models.load_model('../models/Face_recognition/cnn_big_model.h5')
 
     elif service == "objectrecognition":
-        model = cv2.dnn.readNet(f"models/yolo/yolov4.weights", f"models/yolo/yolov4.cfg")
+        model = cv2.dnn.readNet("../models/YOLOv4/yolov4.weights", "../models/YOLOv4/yolov4.cfg")
     return model
 
 # Faciale recognition
@@ -177,3 +177,111 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
                     result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
                 i += 1
     return result
+
+
+
+# Return objects within an image
+def object_detection(image, net):
+    
+    labels = []
+    classes = []
+    with open(f"{yolo_path}/coco.names", "r") as f:
+        classes = [line.strip() for line in f.readlines()]
+
+    layer_names = net.getLayerNames()
+    output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
+    colors = np.random.uniform(0, 255, size=(len(classes), 3))
+
+    # Loading image
+    img = cv2.imread(image)
+    img = cv2.resize(img, None, fx=0.9, fy=0.9)
+    height, width, channels = img.shape
+
+
+    # Detecting objects
+    blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+    net.setInput(blob)
+    outs = net.forward(output_layers)
+
+
+    # Showing informations on the screen
+    class_ids = []
+    confidences = []
+    boxes = []
+    for out in outs:
+        for detection in out:
+            scores = detection[5:]
+            class_id = np.argmax(scores)
+            confidence = scores[class_id]
+            if confidence > 0.5:
+                # Object detected
+                center_x = int(detection[0] * width)
+                center_y = int(detection[1] * height)
+                w = int(detection[2] * width)
+                h = int(detection[3] * height)
+
+                # Rectangle coordinates
+                x = int(center_x - w / 2)
+                y = int(center_y - h / 2)
+
+                boxes.append([x, y, w, h])
+                confidences.append(float(confidence))
+                class_ids.append(class_id)
+
+
+    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+    for i in range(len(boxes)):
+        if i in indexes:
+            label = str(classes[class_ids[i]])
+            labels.append(label)
+            
+    return labels
+
+# Return result as a human understood text
+def results(model, classes):
+    from collections import Counter
+    list_objects_counted = []
+    final_result = "Il y a "
+    if model == "yolo":
+        nb_classes = len(classes)
+        if nb_classes == 0:
+            return "Rien n'est détecté"
+        elif nb_classes == 1:
+            return f"Il y a {classes[0]} devant vous"
+        else:
+            result = Counter(classes)
+            first = True
+            for r in result:
+                if result[r] > 1:
+                    if first:
+                        list_objects_counted.append("des "+str(result[r])+" "+r+"s")
+                        first = False
+                    else:
+                        list_objects_counted.append(str(result[r])+" "+r+"s")
+                else:
+                    if first:
+                        list_objects_counted.append(str(result[r])+" "+r)
+                        first = False
+                    else:
+                        list_objects_counted.append(str(result[r])+" "+r)
+                
+            n = len(list_objects_counted)
+            i = 0
+            for element in list_objects_counted:
+                if i < n-2:
+                    final_result += element+", "
+                elif i == n-2:
+                    final_result += element+" et "
+                else:
+                    final_result += element+"."
+                i += 1
+            return final_result
+
+                          
+
+    elif model == "face":
+        pass
+    elif model == "text":
+        pass
+    else:
+        pass

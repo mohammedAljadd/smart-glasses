@@ -31,7 +31,7 @@ while True:
         print("The button is pushed successfully")
         
         # the service needed
-        path = service(3)
+        path = service(2)
         
         # Take a picture
         #exec(open("picture.py").read())
@@ -78,7 +78,19 @@ while True:
                 
                 else:
                     # Object
-                    pass
+                    # Yolo object detection
+                    classes = object_detection(image_path, net=model)
+
+                    # Describe the content of the image for the user (blind)
+                    describtion  = results(model="yolo", classes=classes)
+
+                    # Create an audio file from the previous text
+                    audio = generate_audio(describtion)
+                    #return send_from_directory(directory=app.config['AUDIO_FOLDER'], path="audio.mp3", as_attachment=True)
+                    response = {
+                        "result": describtion
+                    }
+                    print(describtion)
 
             
     break
