@@ -1,8 +1,13 @@
-from picamera import PiCamera
+#from picamera import PiCamera
 from time import sleep
 import pytesseract
 import pyttsx3, time 
-from tensorflow.keras.models import load_model
+#from tensorflow.keras.models import load_model
+from tensorflow import keras
+from config import *
+import cv2
+import tensorflow as tf
+import numpy as np
 
 # Service needed
 def service(option):
@@ -23,8 +28,9 @@ def take_picture():
         sleep(0.5)
         camera.capture('img/picture.jpg')
         camera.stop_preview()
+        print("The picture is taken successfully")
     except:
-        print("Camera is not available")
+        print("The camera is not available")
 
 # Generating audio file from a text
 def generate_audio(text):
@@ -38,34 +44,18 @@ def generate_audio(text):
 def get_model(service):
     global model
     if service == "facialrecognition":
-        model = load_model('models/cnn/cnn_big_model.h5')
+        model = keras.models.load_model('../models/Face_recognition/cnn_big_model.h5')
 
     elif service == "objectrecognition":
         model = cv2.dnn.readNet(f"models/yolo/yolov4.weights", f"models/yolo/yolov4.cfg")
     return model
 
 # Faciale recognition
-'''
-def facial_recognition():
 
-    # Upload folder for images
-    imgs_path = "img/"
-
-
-
-    # Face cascade xml file
-    cascades = ""
-    face_cascade = cv2.CascadeClassifier(os.path.join(cascades, 'haarcascade_frontalface_default.xml'))
+def facial_recognition(model, threshold, face_cascade=face_cascade):
     
-    # Make upload folder empty first
-    empty_folder(imgs_path)
-
-    # Save the image
-    image = request.files["image"]
-    image_name = image.filename
-    image_path = imgs_path+image_name
-    image.save(image_path)
     
+
     # Grayscale
     gray_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
@@ -73,7 +63,7 @@ def facial_recognition():
     predictions = []
 
     # Detect the face with face_cascade
-    faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.3, minNeighbors=8)
+    faces = face_cascade.detectMultiScale(gray_image, scaleFactor=2, minNeighbors=5)
     
     if len(faces) != 0:
         
@@ -86,7 +76,14 @@ def facial_recognition():
             face_input = tf.keras.utils.normalize(face_expanded, axis=1)
 
             # Make prediction
-            index = predict(face_input, threshold=0.7)
+            prediction = model.predict(face_input)
+            index = np.argmax(prediction[0])
+            probabilty = float(format(max(prediction[0]*100), ".3f"))
+
+            if probabilty < threshold*100:
+                # The 4th category when probability is lower than the threshold
+                index = 4
+
             predictions.append(index)
         #predictions = list(set(predictions))
         # Count number faces
@@ -96,8 +93,7 @@ def facial_recognition():
         return result_face_recognition(predictions=predictions, CATEGORIES=CATEGORIES, number_of_faces=i)
         
     return result_face_recognition(CATEGORIES=CATEGORIES)
-    *
-'''
+    
 
 # tesseract function
 
@@ -118,3 +114,66 @@ def tesseract():
         return {"result": result}
     else:
         return {"result": "No text detected"}
+
+
+
+
+def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_faces=0):
+
+    if number_of_faces == 0 and predictions[0] == 5:
+        result = "il n'y a personne."
+
+    else:
+
+        # Remove duplicates
+        predictions_no_duplicates = []
+        for i in predictions:
+            if i not in predictions_no_duplicates:
+                predictions_no_duplicates.append(i)
+
+        number_of_faces = len(predictions_no_duplicates)
+
+        # Count occurences
+        occurences = []
+        for p in predictions_no_duplicates:
+            occurence = predictions.tolist().count(p)
+            # Do not consider duplicates of faces of known people, because it's due to face cascade errors
+            if p not in [0, 1, 2, 3]:
+                occurences.append(occurence)
+            else:
+                occurences.append(1)
+
+
+        # Remove index of "no person is detected"
+        if number_of_faces >=2 and 5 in predictions_no_duplicates:
+            index_no_person = predictions_no_duplicates.index(5)
+            predictions_no_duplicates.pop(index_no_person)
+            occurences.pop(index_no_person)
+            number_of_faces -= 1    
+
+        def replace(i):
+            if i == 1:
+                return ""
+            else:
+                return str(i)
+
+        result = "Il y a "
+        if number_of_faces == 1:
+            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]}"
+
+        elif number_of_faces == 2:
+            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]} et {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
+
+        else:
+            
+            i = 0
+            for p in predictions_no_duplicates:
+                if i < number_of_faces:
+                    if number_of_faces == 1:
+                        result += f"{replace(occurences[i])} {CATEGORIES[p]}."
+                    else:
+                        result += f"{replace(occurences[i])} {CATEGORIES[p]}, "
+                else:
+                    result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
+                i += 1
+    return result

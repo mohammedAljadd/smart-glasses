@@ -1,3 +1,5 @@
+import cv2
+
 # API ip adress
 BASE = "http://192.168.43.203:5000/"
 
@@ -9,3 +11,7 @@ IMG_SIZE = 32
 
 # Image path
 image_path = "img/picture.jpg"
+
+
+# Face cascade xml file
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
