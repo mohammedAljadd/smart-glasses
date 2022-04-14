@@ -14,7 +14,7 @@ GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 is_api = True
 
 # Test internet connection
-if not requests.post("http://www.google.com", files={"text":"text"}):
+if not internet_on():
     generate_audio("The server is currently unreachable, offline mode is activated")
     print("The server is currently unreachable, offline mode is activated")
     is_api = False
@@ -31,22 +31,28 @@ while True:
         print("The button is pushed successfully")
         
         # the service needed
-        path = service(2)
+        path = service(1)
         
         # Take a picture
         #exec(open("picture.py").read())
         take_picture()
+        print("The picture is taken successfully")
         generate_audio("The picture is taken successfully")
         
 
         # Online mode
         if is_api:
             # Send http request
-            image = {'image': open('img/picture.jpg', 'rb')}
-            r = requests.post(BASE+path, files=image)
-            print("the http request is sent successfully")
-            print(r.text)
-            generate_audio(r.text)
+            print("Sending the image to API")
+            try:
+
+                image = {'image': open('img/picture.jpg', 'rb')}
+                r = requests.post(API_ADD+path, files=image)
+                print("the http request is sent successfully")
+                print(r.text)
+                generate_audio(r.text)
+            except:
+                is_api = False
         
         # Offline mode
         else:

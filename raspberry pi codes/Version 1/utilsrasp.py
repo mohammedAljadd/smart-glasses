@@ -2,12 +2,22 @@
 from time import sleep
 import pytesseract
 import pyttsx3, time 
-#from tensorflow.keras.models import load_model
 from tensorflow import keras
 from config import *
 import cv2
 import tensorflow as tf
 import numpy as np
+import urllib.request
+from picamera import PiCamera
+
+# Test if internet is available
+def internet_on():
+    try:
+        urllib.request.urlopen('http://www.google.com', timeout=2)
+        return True
+    except:
+        return False
+
 
 # Service needed
 def service(option):
@@ -21,8 +31,9 @@ def service(option):
     return path
 
 # Taking picture function
-def take_picture():
+def take_picture():  
     try:
+        print("Trying Pi Camera")
         camera = PiCamera()
         camera.start_preview()
         sleep(0.5)
@@ -30,7 +41,21 @@ def take_picture():
         camera.stop_preview()
         print("The picture is taken successfully")
     except:
-        print("The camera is not available")
+        print("The Pi Camera is not available")
+        try:
+            print("Trying IP Camera Samsung")
+            vid = cv2.VideoCapture("http://192.168.1.99:8080/video")
+
+            while(True):
+                ret, frame = vid.read()
+                cv2.imwrite("img/picture1.jpg", frame)
+                break
+            vid.release()
+            cv2.destroyAllWindows()
+        except:
+            print("No camera is avalible now")
+            
+    
 
 # Generating audio file from a text
 def generate_audio(text):

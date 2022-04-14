@@ -1,7 +1,7 @@
 import cv2
 
 # API ip adress
-BASE = "http://192.168.43.203:5000/"
+API_ADD = "http://192.168.1.9:5000/"
 
 # Facial recognition classes
 CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "unknow person", "there is no person"]
@@ -10,7 +10,7 @@ CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "Y
 IMG_SIZE = 32
 
 # Image path
-image_path = "img/yolo.jpeg"
+image_path = "img/picture1.jpg"
 #image_path = "img/testocr.png"
 
 # Face cascade xml file
