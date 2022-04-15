@@ -10,12 +10,12 @@ CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "Y
 IMG_SIZE = 32
 
 # Image path
-image_path = "img/picture1.jpg"
-#image_path = "img/testocr.png"
+#image_path = "img/picture1.jpg"
+image_path = "img/testocr.png"
 
 # Face cascade xml file
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
 
 # YOLO path
-yolo_path = "../models/YOLOv4"
+yolo_path = "models/YOLOv4"

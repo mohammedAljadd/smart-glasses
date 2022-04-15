@@ -1,8 +1,9 @@
 #from picamera import PiCamera
+from imp import load_module
 from time import sleep
 import pytesseract
 import pyttsx3, time 
-from tensorflow import keras
+from tensorflow.keras.models import load_model
 from config import *
 import cv2
 import tensorflow as tf
@@ -69,10 +70,11 @@ def generate_audio(text):
 def get_model(service):
     global model
     if service == "facialrecognition":
-        model = keras.models.load_model('../models/Face_recognition/cnn_big_model.h5')
+        #model = keras.models.load_model('models/Face_recognition/cnn_big_model.h5')
+        model = load_model('models/Face_recognition/cnn_big_model.h5')
 
     elif service == "objectrecognition":
-        model = cv2.dnn.readNet("../models/YOLOv4/yolov4.weights", "../models/YOLOv4/yolov4.cfg")
+        model = cv2.dnn.readNet("models/YOLOv4/yolov4.weights", "models/YOLOv4/yolov4.cfg")
     return model
 
 # Faciale recognition

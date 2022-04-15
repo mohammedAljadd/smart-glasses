@@ -14,7 +14,7 @@ GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 is_api = True
 
 # Test internet connection
-if not internet_on():
+if internet_on():
     generate_audio("The server is currently unreachable, offline mode is activated")
     print("The server is currently unreachable, offline mode is activated")
     is_api = False
