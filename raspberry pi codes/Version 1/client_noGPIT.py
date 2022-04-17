@@ -31,10 +31,9 @@ while True:
         print("The button is pushed successfully")
         
         # the service needed
-        path = service(1)
+        path = service(3)
         
         # Take a picture
-        #exec(open("picture.py").read())
         take_picture()
         print("The picture is taken successfully")
         generate_audio("The picture is taken successfully")
