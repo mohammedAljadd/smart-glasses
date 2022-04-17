@@ -9,7 +9,7 @@ import cv2
 import tensorflow as tf
 import numpy as np
 import urllib.request
-from picamera import PiCamera
+
 
 # Test if internet is available
 def internet_on():
@@ -35,6 +35,7 @@ def service(option):
 def take_picture():  
     try:
         print("Trying Pi Camera")
+        from picamera import PiCamera
         camera = PiCamera()
         camera.start_preview()
         sleep(0.5)
