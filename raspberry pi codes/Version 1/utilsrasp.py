@@ -1,20 +1,18 @@
 #from picamera import PiCamera
-from imp import load_module
 from time import sleep
 import pytesseract
 import pyttsx3, time 
-from tensorflow.keras.models import load_model
+from tensorflow import keras
 from config import *
 import cv2
 import tensorflow as tf
 import numpy as np
 import urllib.request
 
-
 # Test if internet is available
 def internet_on():
     try:
-        urllib.request.urlopen('http://www.google.com', timeout=2)
+        urllib.request.urlopen('http://www.google.com', timeout=0.5)
         return True
     except:
         return False
@@ -34,29 +32,18 @@ def service(option):
 # Taking picture function
 def take_picture():  
     try:
-        print("Trying Pi Camera")
-        from picamera import PiCamera
-        camera = PiCamera()
-        camera.start_preview()
-        sleep(0.5)
-        camera.capture('img/picture.jpg')
-        camera.stop_preview()
-        print("The picture is taken successfully")
-    except:
-        print("The Pi Camera is not available")
-        try:
-            print("Trying IP Camera Samsung")
-            vid = cv2.VideoCapture("http://192.168.1.99:8080/video")
+        print("Trying IP Camera Samsung")
+        vid = cv2.VideoCapture(CAMERA_IP_ADD+"/video")
 
-            while(True):
-                ret, frame = vid.read()
-                cv2.imwrite("img/picture1.jpg", frame)
-                break
-            vid.release()
-            cv2.destroyAllWindows()
-        except:
-            print("No camera is avalible now")
-            
+        while(True):
+            ret, frame = vid.read()
+            cv2.imwrite("img/picture1.jpg", frame)
+            break
+        vid.release()
+        cv2.destroyAllWindows()
+    except:
+        print("No camera is avalible now")
+        
     
 
 # Generating audio file from a text
@@ -71,11 +58,10 @@ def generate_audio(text):
 def get_model(service):
     global model
     if service == "facialrecognition":
-        #model = keras.models.load_model('models/Face_recognition/cnn_big_model.h5')
-        model = load_model('models/Face_recognition/cnn_big_model.h5')
+        model = keras.models.load_model('../models/Face_recognition/cnn_big_model.h5')
 
     elif service == "objectrecognition":
-        model = cv2.dnn.readNet("models/YOLOv4/yolov4.weights", "models/YOLOv4/yolov4.cfg")
+        model = cv2.dnn.readNet("../models/YOLOv4/yolov4.weights", "../models/YOLOv4/yolov4.cfg")
     return model
 
 # Faciale recognition
