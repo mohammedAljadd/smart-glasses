@@ -4,13 +4,14 @@ import sys
 from threading import Thread
 
 # create socket
-client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+client_socket = socket.socket()#socket.AF_INET,socket.SOCK_STREAM)
 
 host_name  = socket.gethostname()
-host_ip = socket.gethostbyname(host_name)
+host_ip = '192.168.43.203'#socket.gethostbyname(host_name)
 port = 9999
 
 # Connect to the server --------------------------------------------------------------------------------
+print("Connecting to the server ...")
 client_socket.connect((host_ip, port)) # a tuple
 
 
@@ -39,7 +40,7 @@ client_socket.send(bytes(f"{option}", 'utf-8'))
 asked_streaming = client_socket.recv(256).decode('utf-8')
 
 # Start streaming --------------------------------------------------------------------------------------
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("http://192.168.43.1:8080/video")
 IMG_SIZE = 288
 Started_prediction = False
 while True:
