@@ -1,1 +1,16 @@
-raspberry pi codes/models/
+app/static/
+Model training/Face identification/dataset/
+raspberry pi codes/models
+Model training/Handwriting recognition/img/
+run.cmd
+*/__pycache__/*
+__pycache__/
+Model training/Handwriting recognition/model_h5_format/
+Model training/Handwriting recognition/dataset/
+Model training/Handwriting recognition/.ipynb_checkpoints/
+Model training/Face identification/data_augmentation.png
+Model training/Face identification/cascades/
+.vscode/
+2nd version/static/deep_learning_models
+Model training/Face identification/data.pickle/
+*/.ipynb_checkpoints\facial-recognition-checkpoint.ipynb
