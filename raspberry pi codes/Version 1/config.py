@@ -1,9 +1,9 @@
 import cv2
 
 # API ip adress
-API_IP_ADD = "http://192.168.1.9:5000/"
+API_IP_ADD = "http://192.168.43.203:5000/"
 
-# IP camera @
+# IP@ of ESP-32 cam
 CAMERA_IP_ADD = "http://192.168.43.217:81/stream"
 
 # Facial recognition classes
@@ -13,7 +13,7 @@ CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "Y
 IMG_SIZE = 32
 
 # Image path
-image_path = "img/picture1.jpg"
+image_path = "img/picture.jpg"
 #image_path = "img/testocr.png"
 
 # Face cascade xml file

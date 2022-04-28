@@ -16,7 +16,7 @@ def play_sound(text, is_api):
         from gtts import gTTS
         audio = gTTS(
                 text=text, 
-                lang="en", slow=False
+                lang="fr", slow=False
                 )
         audio_file_path = "audio/audio.mp3"
         audio.save(audio_file_path)
@@ -31,8 +31,11 @@ def play_sound(text, is_api):
     else:
         import pyttsx3  
         # initialize Text-to-speech engine  
-        engine = pyttsx3.init() 
-        engine.setProperty("rate", 188) 
+        engine = pyttsx3.init('espeak') 
+        engine.setProperty("rate", 160) 
+        engine.setProperty("voice", "french")
+        #voice = engine.getProperty('voices')[0] # the french voice
+        #engine.setProperty('voice', voice.id)
         # convert this text to speech    
         engine.say(text)  
         # play the speech  
@@ -53,7 +56,7 @@ def service(option):
     if option == 1:
         path = "facialrecognition"
     elif option == 2:
-        path = "objectrecognition"
+        path = "objectdetection"
     else:
         path = "textrecognition"
     return path
@@ -66,7 +69,7 @@ def take_picture():
 
         while(True):
             ret, frame = vid.read()
-            cv2.imwrite("img/picture1.jpg", frame)
+            cv2.imwrite("img/picture.jpg", frame)
             break
         vid.release()
         cv2.destroyAllWindows()
@@ -89,7 +92,7 @@ def get_model(service):
     if service == "facialrecognition":
         model = keras.models.load_model('../models/Face_recognition/cnn_big_model.h5')
 
-    elif service == "objectrecognition":
+    elif service == "objectdetection":
         model = cv2.dnn.readNet("../models/YOLOv4/yolov4.weights", "../models/YOLOv4/yolov4.cfg")
     return model
 
