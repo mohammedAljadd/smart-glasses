@@ -10,9 +10,8 @@ last_time = time()
 font = cv2.FONT_HERSHEY_SIMPLEX
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-host_name  = socket.gethostname()
-host_ip = socket.gethostbyname(host_name)
-port = 1439
+host_ip = "192.168.43.203"
+port = 14390
 
 socket_address = (host_ip,port)
 
@@ -51,24 +50,19 @@ while True:
         elif option == "Text recognition":
             model = load_text_model()
             print("Text model is loaded")
-            # Receive image
-        
-        while True:
-
-            # Receive data 'streaming' -----------------------------------------------------------------------------------
-            x = client_socket.recvfrom(1000000)
-            clientip = x[1][0]
-            data = x[0]
-            data = pickle.loads(data)
-            image = cv2.imdecode(data, cv2.IMREAD_COLOR)
+    
+        # Get streaming from ESP-32 cam' -----------------------------------------------------------------------------------     
+        vid = cv2.VideoCapture(CAMERA_IP_ADD)
             
+        while True:
+            ret, frame = vid.read()
 
             # Preprocess the image -------------------------------------------------------------------------------------------
-            gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             
 
             # Prediction Section ---------------------------------------------------------------------------------------------
-            if time() > last_time + 0.24:
+            if time() > last_time + 0.5:
 
                 if option == "Facial recognition":
 
