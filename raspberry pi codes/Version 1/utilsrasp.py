@@ -9,10 +9,39 @@ import tensorflow as tf
 import numpy as np
 import urllib.request
 
+
+# Text to audio
+def play_sound(text, is_api):
+    if is_api == True:
+        from gtts import gTTS
+        audio = gTTS(
+                text=text, 
+                lang="en", slow=False
+                )
+        audio_file_path = "audio/audio.mp3"
+        audio.save(audio_file_path)
+        import pygame
+        pygame.mixer.init()
+        pygame.mixer.music.load("audio/audio.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
+        
+
+    else:
+        import pyttsx3  
+        # initialize Text-to-speech engine  
+        engine = pyttsx3.init() 
+        engine.setProperty("rate", 188) 
+        # convert this text to speech    
+        engine.say(text)  
+        # play the speech  
+        engine.runAndWait()  
+
 # Test if internet is available
 def internet_on():
     try:
-        urllib.request.urlopen('http://www.google.com', timeout=0.5)
+        urllib.request.urlopen('http://www.google.com', timeout=0.2)
         return True
     except:
         return False
@@ -32,8 +61,8 @@ def service(option):
 # Taking picture function
 def take_picture():  
     try:
-        print("Trying IP Camera Samsung")
-        vid = cv2.VideoCapture(CAMERA_IP_ADD+"/video")
+        print("Taking picture")
+        vid = cv2.VideoCapture(CAMERA_IP_ADD)
 
         while(True):
             ret, frame = vid.read()
@@ -42,7 +71,7 @@ def take_picture():
         vid.release()
         cv2.destroyAllWindows()
     except:
-        print("No camera is avalible now")
+        print("Can't take picture")
         
     
 

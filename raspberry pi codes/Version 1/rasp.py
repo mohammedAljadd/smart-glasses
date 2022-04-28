@@ -5,6 +5,7 @@ from config import *
 from utilsrasp import *
 import os
 import cv2
+import pyttsx3  
 
 # GPIO configuration
 GPIO.setwarnings(False)
@@ -18,19 +19,19 @@ too_long = False
 
 # Test internet connection
 if not internet_on():
-    generate_audio("The server is currently unreachable, offline mode is activated")
+    play_sound("The server is currently unreachable, offline mode is activated", is_api)
     print("The server is currently unreachable, offline mode is activated")
     is_api = False # use offline mode
 
 else:
-    generate_audio("Online mode is used")
+    play_sound("Online mode is used", is_api)
     print("Online mode is used")
 
 
 # Wait for push button
 while True:
     if GPIO.input(10) == GPIO.LOW:
-        generate_audio("The button is pushed successfully")
+        play_sound("The button is pushed successfully", is_api)
         print("The button is pushed successfully")
         
         # Choosing the service needed
@@ -40,7 +41,7 @@ while True:
         # Taking a picture
         take_picture()
         print("The picture is taken successfully")
-        generate_audio("The picture is taken successfully")
+        play_sound("The picture is taken successfully", is_api)
         
 
         # Online mode
@@ -54,7 +55,7 @@ while True:
                 r = requests.post(API_IP_ADD+path, files=image, timeout=0.5) 
                 print("the http request is sent successfully")
                 print(r.text)
-                generate_audio(r.text)
+                play_sound(r.text, is_api)
             except:
                 print("http not sent")
                 is_api = False
@@ -64,7 +65,7 @@ while True:
         if not is_api:
             if too_long:
                 print("The http request takes too long to respond, we switch to offline mode")
-
+                play_sound("The http request takes too long to respond, we switch to offline mode", is_api)
             # Text recognition
             if path == "textrecognition":
                 img = cv2.imread(image_path, cv2.COLOR_BGR2GRAY) 
@@ -77,14 +78,16 @@ while True:
                     result = "No text detected"
                 # Display result
                 print("Here is your result :"+result)
-                generate_audio(result)
+                play_sound(result, is_api)
 
 
             else:
                 model = get_model(path)
                 # Facial recognition
                 if path == "facialrecognition":
-                    print(facial_recognition(model=model, threshold=0.7))
+                    result = facial_recognition(model=model, threshold=0.7)
+                    print(result)
+                    play_sound(result, is_api)
 
                 # Object detection
                 else:
@@ -99,6 +102,7 @@ while True:
                         "result": describtion
                     }
                     print(describtion)
+                    play_sound(describtion, is_api)
 
             
     break

@@ -4,10 +4,10 @@ import cv2
 API_IP_ADD = "http://192.168.1.9:5000/"
 
 # IP camera @
-CAMERA_IP_ADD = "http://192.168.43.1:8080/"
+CAMERA_IP_ADD = "http://192.168.43.217:81/stream"
 
 # Facial recognition classes
-CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "unknow person", "there is no person"]
+CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "unknown person", "there is no person"]
 
 # Img size for CNN model
 IMG_SIZE = 32
