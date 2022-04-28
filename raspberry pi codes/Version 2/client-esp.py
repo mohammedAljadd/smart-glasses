@@ -1,76 +1,58 @@
-import socket,cv2, pickle,struct
-from time import sleep
-import sys
-from threading import Thread
+import socket,cv2, pickle
+from utils import *
 
 # create socket
 client_socket = socket.socket()#socket.AF_INET,socket.SOCK_STREAM)
-
-host_name  = socket.gethostname()
-host_ip = '192.168.43.203'#socket.gethostbyname(host_name)
-port = 9999
+#client_socket.settimeout(5)
+host_ip = "192.168.43.203"#socket.gethostbyname(host_name)
+port = 14390
 
 # Connect to the server --------------------------------------------------------------------------------
-print("Connecting to the server ...")
-client_socket.connect((host_ip, port)) # a tuple
-
-
-# Get option
-
-option = "1"
-
-if option == "1":
-    option = "Facial recognition"
-
-elif option == "2":
-    option = "Object detection"
-else:
-    option = "Text recognition"
-
+try:
     
+    print("Trying to connect to "+host_ip+":"+str(port))
+    client_socket.connect((host_ip, port)) # a tuple
+    
+    print("Le serveur est accessible")
+    play_sound("Le serveur est accessible")
 
-# Send option ------------------------------------------------------------------------------------------
-client_socket.send(bytes(f"{option}", 'utf-8'))
 
+    # Get option --------------------------------------------------------------------------------
+    option = "1"
 
+    if option == "1":
+        option = "Facial recognition"
 
+    elif option == "2":
+        option = "Object detection"
+    else:
+        option = "Text recognition"
 
-
-# Receive message where asked to stream
-asked_streaming = client_socket.recv(256).decode('utf-8')
-
-# Start streaming --------------------------------------------------------------------------------------
-cap = cv2.VideoCapture("http://192.168.43.1:8080/video")
-IMG_SIZE = 288
-Started_prediction = False
-while True:
         
-    ret,photo = cap.read()
-    cv2.imshow('Client camera', photo)
-    #photo = cv2.resize(photo, (IMG_SIZE, IMG_SIZE))
-    ret, buffer = cv2.imencode(".jpg",photo,[int(cv2.IMWRITE_JPEG_QUALITY),30])
-    x_as_bytes = pickle.dumps(buffer)
-    client_socket.sendto((x_as_bytes),(host_ip, port))
+
+    # Send option ------------------------------------------------------------------------------------------
+    client_socket.send(bytes(f"{option}", 'utf-8'))
+
+    import sys
+    while True:
+        data = client_socket.recv(1024*2).decode('utf-8')
+        if not data: sys.exit(0)
+        print(data)
+
+except socket.error:
     
-    # Receive message from server 'Thread'
-    def receive_from_server():
-        import sys
-        while True:
-            data = client_socket.recv(1024).decode('utf-8')
-            if not data: sys.exit(0)
-            print(data)
-    Thread(target=receive_from_server).start()
+    # ----------- video locally
+
+    print("Traitement vidéo local")
+    play_sound("Traitement vidéo local")
 
 
-    key = cv2.waitKey(1) & 0xFF
-    if key  == ord('q'):
-        break
 
+
+        
     
 
 
-cv2.destroyAllWindows()
-cap.release()
 
 
 client_socket.close()
