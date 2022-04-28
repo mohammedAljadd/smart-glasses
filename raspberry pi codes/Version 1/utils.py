@@ -11,7 +11,7 @@ import urllib.request
 
 
 # Text to audio
-def play_sound(text, is_api):
+def play_sound(text, is_api=True):
     if is_api == True:
         from gtts import gTTS
         audio = gTTS(
@@ -61,10 +61,10 @@ def service(option):
         path = "textrecognition"
     return path
 
-# Taking picture function
-def take_picture():  
+# Taking picture function (esp-32 cam)
+def take_picture(is_api):  
     try:
-        print("Taking picture")
+        print("La prise de photo")
         vid = cv2.VideoCapture(CAMERA_IP_ADD)
 
         while(True):
@@ -73,17 +73,17 @@ def take_picture():
             break
         vid.release()
         cv2.destroyAllWindows()
+        play_sound("La photo a été prise", is_api)
+        return True
     except:
-        print("Can't take picture")
+        print("La prise de photo a échoué")
+        play_sound("La prise de photo a échoué", is_api)
+        return False
         
-    
 
-# Generating audio file from a text
-def generate_audio(text):
-    pass
-    #engine = pyttsx3.init() 
-    #engine.say(text) 
-    #engine.runAndWait()
+# Taking picture function (raspberry pi cam module)
+def take_picture_cam_module():
+    pass  
 
 
 # Load models

@@ -1,7 +1,6 @@
 import requests
-from utilsrasp import generate_audio
 from config import *
-from utilsrasp import *
+from utils import *
 import os
 import cv2
 import pyttsx3  
@@ -12,10 +11,7 @@ from time import sleep
 is_api = True
 too_long = False
 
-# Taking a picture
-take_picture()
-print("La photo a été prise")
-play_sound("La photo a été prise", is_api)
+
 
 # Test internet connection
 if not internet_on():
@@ -30,12 +26,14 @@ else:
 
 # Wait for push button
 while True:
-        #play_sound("The button is pushed successfully", is_api)
-        #print("The button is pushed successfully")
         
+        # Taking a picture
+        if not take_picture(is_api):
+            break
+
         # Choosing the service needed
         # 1: face, 2: object, 3: text
-        path = service(2)
+        path = service(1)
         
         
         
@@ -50,7 +48,7 @@ while True:
                 # waiting 5 seconds, if not response, switch to offline mode
                 r = requests.post(API_IP_ADD+path, files=image, timeout=10) 
                 
-                print("la requête http est envoyée avec succès")
+                print("l'image sera traité")
                 print(r.text)
                 play_sound(r.text, is_api)
             except Timeout:
@@ -61,8 +59,8 @@ while True:
         # Offline mode
         if not is_api:
             if too_long:
-                print("La requête http met trop de temps à répondre, on passe en mode déconnecté")
-                play_sound("La requête http met trop de temps à répondre, on passe en mode déconnecté", is_api)
+                print("La connexion Internet est lente, on passe au mode déconnecté")
+                play_sound("La connexion Internet est lente, on passe au mode déconnecté", is_api)
             # Text recognition
             if path == "textrecognition":
                 img = cv2.imread(image_path, cv2.COLOR_BGR2GRAY) 
