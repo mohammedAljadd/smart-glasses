@@ -16,7 +16,7 @@ def play_sound(text, is_api=True):
         from gtts import gTTS
         audio = gTTS(
                 text=text, 
-                lang="fr", slow=False
+                lang="en", slow=False
                 )
         audio_file_path = "audio/audio.mp3"
         audio.save(audio_file_path)
@@ -44,7 +44,8 @@ def play_sound(text, is_api=True):
 # Test if internet is available
 def internet_on():
     try:
-        urllib.request.urlopen('http://www.google.com', timeout=0.2)
+        import requests
+        requests.post(API_IP_ADD+"test", timeout=1) 
         return True
     except:
         return False
@@ -62,22 +63,22 @@ def service(option):
     return path
 
 # Taking picture function (esp-32 cam)
-def take_picture(is_api):  
+def take_picture(is_api=True):  
     try:
-        print("La prise de photo")
+        print("La prise de photo ...")
         vid = cv2.VideoCapture(CAMERA_IP_ADD)
 
         while(True):
             ret, frame = vid.read()
-            cv2.imwrite("img/picture.jpg", frame)
-            break
-        vid.release()
-        cv2.destroyAllWindows()
-        play_sound("La photo a été prise", is_api)
-        return True
+            if cv2.imwrite("img/picture.jpg", frame):
+                vid.release()
+                cv2.destroyAllWindows()
+                play_sound("The photo is taken")
+                return True
+        
     except:
         print("La prise de photo a échoué")
-        play_sound("La prise de photo a échoué", is_api)
+        play_sound("Failed to take photo")
         return False
         
 
@@ -156,7 +157,7 @@ def tesseract():
     predictions = pytesseract.image_to_string(img)
     result = predictions.replace('\n', ' ')
     if len(result)>=1:
-        result = str(text_translation(result))
+        result = str((result))
         return {"result": result}
     else:
         return {"result": "No text detected"}
@@ -167,7 +168,7 @@ def tesseract():
 def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_faces=0):
 
     if number_of_faces == 0 and predictions[0] == 5:
-        result = "il n'y a personne."
+        result = "There is no person."
 
     else:
 
@@ -203,12 +204,12 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
             else:
                 return str(i)
 
-        result = "Il y a "
+        result = "There "
         if number_of_faces == 1:
-            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]}"
+            result += f"is {replace(occurences[0])} {CATEGORIES[predictions[0]]}"
 
         elif number_of_faces == 2:
-            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]} et {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
+            result += f"are {replace(occurences[0])} {CATEGORIES[predictions[0]]} and {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
 
         else:
             
@@ -220,7 +221,7 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
                     else:
                         result += f"{replace(occurences[i])} {CATEGORIES[p]}, "
                 else:
-                    result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
+                    result += f"and {replace(occurences[i])} {CATEGORIES[p]}."
                 i += 1
     return result
 
