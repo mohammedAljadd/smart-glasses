@@ -106,6 +106,7 @@ class Text_recognition(Resource):
             pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
             img = cv2.imread(image_path, cv2.COLOR_BGR2GRAY) 
+            #img = cv2.flip(img, 1)
             img = cv2.resize(img, (960, 540)) 
 
             

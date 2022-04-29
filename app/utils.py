@@ -124,7 +124,7 @@ def text_translation(text):
 def results(model, classes):
     from collections import Counter
     list_objects_counted = []
-    final_result = "Il y a "
+    final_result = "there is "
     if model == "yolo":
         nb_classes = len(classes)
         if nb_classes == 0:
