@@ -6,6 +6,11 @@ from app.resources import *
 # App instanciation
 app = Flask(__name__)
 
+
+@app.route("/test")
+def hello():
+    return "Flask is working"
+
 # App configuration
 app.config.from_object("config.DevelopmentConfig")
 

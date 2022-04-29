@@ -112,11 +112,12 @@ class Text_recognition(Resource):
 
             predictions = pytesseract.image_to_string(img)
             result = predictions.replace('\n', ' ')
-            if len(result)>=1:
-                result = str(text_translation(result))
-                return {"result": result}
+            if result.isspace() == False:
+                #result = str(text_translation(result))
+                
+                return str(result)
             else:
-                return {"result": "No text detected"}
+                return "No text is detected"
 
 # Handwritting recognition
 class Text_recognition_HTR(Resource):

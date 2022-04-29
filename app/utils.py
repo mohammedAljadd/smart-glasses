@@ -128,16 +128,16 @@ def results(model, classes):
     if model == "yolo":
         nb_classes = len(classes)
         if nb_classes == 0:
-            return "Rien n'est détecté"
+            return "Nothing is detected"
         elif nb_classes == 1:
-            return f"Il y a {classes[0]} devant vous"
+            return f"There is {classes[0]}"
         else:
             result = Counter(classes)
             first = True
             for r in result:
                 if result[r] > 1:
                     if first:
-                        list_objects_counted.append("des "+str(result[r])+" "+r+"s")
+                        list_objects_counted.append("a "+str(result[r])+" "+r+"s")
                         first = False
                     else:
                         list_objects_counted.append(str(result[r])+" "+r+"s")
@@ -154,7 +154,7 @@ def results(model, classes):
                 if i < n-2:
                     final_result += element+", "
                 elif i == n-2:
-                    final_result += element+" et "
+                    final_result += element+" and "
                 else:
                     final_result += element+"."
                 i += 1
@@ -182,7 +182,7 @@ def empty_folder(path):
 def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_faces=0):
 
     if number_of_faces == 0 and predictions[0] == 5:
-        result = "il n'y a personne."
+        result = "There is no person."
 
     else:
 
@@ -218,12 +218,12 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
             else:
                 return str(i)
 
-        result = "Il y a "
+        result = "There "
         if number_of_faces == 1:
-            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]}"
+            result += f"is {replace(occurences[0])} {CATEGORIES[predictions[0]]}"
 
         elif number_of_faces == 2:
-            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]} et {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
+            result += f"are {replace(occurences[0])} {CATEGORIES[predictions[0]]} and {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
 
         else:
             
@@ -235,7 +235,7 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
                     else:
                         result += f"{replace(occurences[i])} {CATEGORIES[p]}, "
                 else:
-                    result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
+                    result += f"and {replace(occurences[i])} {CATEGORIES[p]}."
                 i += 1
     return result
 

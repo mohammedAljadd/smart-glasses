@@ -10,15 +10,15 @@ last_time = time()
 font = cv2.FONT_HERSHEY_SIMPLEX
 server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-host_ip = "192.168.43.203"
-port = 14390
+host_ip = '192.168.43.203'
+port = 8000
 
 socket_address = (host_ip,port)
 
 # Socket Bind
 server_socket.bind(socket_address)
 # Socket Listen
-server_socket.listen(5)
+server_socket.listen(1)
 print("LISTENING AT:",socket_address)
 
 j = 0
