@@ -33,7 +33,7 @@ while True:
 
         # Choosing the service needed
         # 1: face, 2: object, 3: text
-        path = service(3)
+        path = service(1)
         play_sound(path)
         
         
@@ -59,15 +59,16 @@ while True:
         # Offline mode
         if not is_api:
             if too_long:
-                print("The Internet connection is slow, we go offline")
-                play_sound("La connexion Internet est lente, on passe au mode déconnecté")
+                print("La connexion Internet est lente, on passe au mode déconnecté")
+                play_sound("The Internet connection is slow, we go offline")
             # Text recognition
             if path == "textrecognition":
                 img = cv2.imread(image_path, cv2.COLOR_BGR2GRAY) 
                 img = cv2.resize(img, (960, 540)) 
                 predictions = pytesseract.image_to_string(img)
                 result = predictions.replace('\n', ' ')
-                if len(result)>=1:
+                if result.isspace() == False:
+                #result = str(text_translation(result))
                     result = str(result)
                 else:
                     result = "No text is detected"
