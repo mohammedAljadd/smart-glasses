@@ -23,12 +23,12 @@ while True:
         
         # Taking a picture
         if not take_picture_cam_module():
-            break
+            pass
 
 
         # Choosing the service needed
         # 1: face, 2: object, 3: text
-        path = service(1)
+        path = service(2)
         
         print("Sending the image to API")
 

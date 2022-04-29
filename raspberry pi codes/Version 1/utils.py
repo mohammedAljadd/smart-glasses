@@ -16,7 +16,7 @@ def play_sound(text, is_api=True):
         from gtts import gTTS
         audio = gTTS(
                 text=text, 
-                lang="fr", slow=False
+                lang="en", slow=False
                 )
         audio_file_path = "audio/audio.mp3"
         audio.save(audio_file_path)
@@ -62,22 +62,22 @@ def service(option):
     return path
 
 # Taking picture function (esp-32 cam)
-def take_picture(is_api):  
+def take_picture(is_api=True):  
     try:
-        print("La prise de photo")
+        print("La prise de photo ...")
         vid = cv2.VideoCapture(CAMERA_IP_ADD)
 
         while(True):
             ret, frame = vid.read()
-            cv2.imwrite("img/picture.jpg", frame)
-            break
-        vid.release()
-        cv2.destroyAllWindows()
-        play_sound("La photo a été prise", is_api)
-        return True
+            if cv2.imwrite("img/picture.jpg", frame):
+                vid.release()
+                cv2.destroyAllWindows()
+                play_sound("The photo is taken")
+                return True
+        
     except:
         print("La prise de photo a échoué")
-        play_sound("La prise de photo a échoué", is_api)
+        play_sound("Failed to take photo")
         return False
         
 
