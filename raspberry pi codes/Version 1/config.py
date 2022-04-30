@@ -4,9 +4,8 @@ import cv2
 API_IP_ADD = "http://192.168.43.203:5000/"
 
 # IP@ of ESP-32 cam
-CAMERA_IP_ADD = "http://192.168.43.217:81/stream"
-#CAMERA_IP_ADD = "http://192.168.43.1:8080/video"
-
+#CAMERA_IP_ADD = "http://192.168.43.217:81/stream"
+CAMERA_IP_ADD = "http://192.168.43.1:8080/video"
 # Facial recognition classes
 CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "unknown person", "there is no person"]
 
