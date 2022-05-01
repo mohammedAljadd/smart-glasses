@@ -1,3 +1,4 @@
+from calendar import c
 import io
 import socket
 import struct
@@ -71,6 +72,8 @@ while True:
                 stream.truncate()
             # Write a length of zero to the stream to signal we're done
             connection.write(struct.pack('<L', 0))
+            connection = open(connection, 'w+')
+            connection.write(bytes(service, encoding='utf8'))
             
         finally:
             connection.close()

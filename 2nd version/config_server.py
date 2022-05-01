@@ -1,12 +1,8 @@
-YOLO_FOLDER = "../..app/static/deep_learning_models/YOLOv4"
+image_path = "image/"
 
-FACE_RECOGNITION_FOLDER = "../app/static/deep_learning_models/Face_recognition/cnn_big_model.h5"
+CASCADE_FOLDER = "static/deep_learning_models/Face_recognition/cascades/data"
 
-IMAGE_FOLDER = "../../app/static/image/"
-
-AUDIO_FOLDER = "../../app/static/audio/"
-
-CASCADE_FOLDER =  "../app/static/deep_learning_models/Face_recognition/cascades/data"
+yolo_path = "static/deep_learning_models/YOLOv4"
 
 IMG_SIZE = 32
 

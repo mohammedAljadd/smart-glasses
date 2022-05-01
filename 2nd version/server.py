@@ -4,21 +4,25 @@ import struct
 from PIL import Image
 from grpc import server
 import matplotlib.pyplot as pl
+from threading import Thread
+from utils import *
+from time import time
 
+last_time = time()
 server_socket = socket.socket()
+server_socket2 = socket.socket()
 server_socket.bind(('192.168.43.203', 8000))  # ADD IP HERE
+server_socket2.bind(('192.168.43.203', 8002)) 
 server_socket.listen(0)
-
+server_socket2.listen(0)
+client_socket,addr = server_socket2.accept()
 # Accept a single connection and make a file-like object out of it
 connection = server_socket.accept()[0].makefile('rb')
 
 # Receive option from raspberry pi
 service = connection.readline(2).decode("UTF-8")
 
-if service == "01":
-    pass
-elif service == "10":
-    pass
+
 
 
 try:
@@ -43,12 +47,32 @@ try:
         else:
             img.set_data(image)
 
+       
         pl.pause(0.01)
         pl.draw()
 
-        #print('Image is %dx%d' % image.size)
         image.verify()
-        #print('Image is verified')
+        
+        # Prediction
+        img_array = np.asarray(image)
+        gray_image = cv2.cvtColor(img_array, cv2.COLOR_BGR2GRAY)
+        model = get_model(service)
+        if service == "01":
+            import os
+            face_cascade = cv2.CascadeClassifier(os.path.join(CASCADE_FOLDER, 'haarcascade_frontalface_default.xml'))
+            result = facial_recognition(model, threshold=0.7, face_cascade=face_cascade, gray_image=gray_image)
+            client_socket.send(bytes(result, 'utf-8'))
+            
+                
+        elif service == "10":
+            labels = object_detection(image, model)
+            result = results(labels)
+            client_socket.send(bytes(result, 'utf-8'))
+            
+        
+        
+
+
 finally:
     connection.close()
     server_socket.close()
