@@ -156,7 +156,7 @@ def object_detection(image, net):
     colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
     # Loading image
-    img = cv2.imread(image)
+    img = np.array(image)
     img = cv2.resize(img, None, fx=0.9, fy=0.9)
     height, width, channels = img.shape
 
