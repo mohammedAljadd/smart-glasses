@@ -118,7 +118,7 @@ class Text_recognition(Resource):
                 
                 return str(result)
             else:
-                return "No text is detected"
+                return "Aucun texte n'est détecté"
 
 # Handwritting recognition
 class Text_recognition_HTR(Resource):

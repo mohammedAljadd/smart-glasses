@@ -18,7 +18,7 @@ GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 
-play_sound("Choose your mode, image or video")
+play_sound("Choisissez votre mode, image ou vidéo")
 
 
 while True:
@@ -32,14 +32,14 @@ while True:
 
         # image
         if fourth_button:
-            play_sound("Image processing")
+            play_sound("mode image")
             exec(open("v1/main_v1.py").read())
                 
 
         # video    
         elif fifth_button:
-            play_sound("Video processing")
+            play_sound("mode vidéo")
             exec(open("v2/main_v2.py").read())
             
         elif first_button or second_button or third_button:
-            play_sound("Wrong commande")
+            play_sound("Mauvaise commande")
