@@ -1,3 +1,4 @@
+from http.server import ThreadingHTTPServer
 import io
 import socket
 import struct
@@ -7,44 +8,53 @@ from utils import *
 import RPi.GPIO as GPIO
 from utils import *
 from requests.exceptions import Timeout
-from threading import Thread
-last_time = time.time()
+from v2.config import *
 
-
+    
 # GPIO configuration
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(8, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
+
 client_socket = socket.socket()
-
 client_socket2 = socket.socket()
+# Connecting to the soccet
+client_socket.connect((ip_add, port1))  # ADD IP HERE
+client_socket2.connect((ip_add, port2))
 
-client_socket.connect(('192.168.43.203', 8000))  # ADD IP HERE
-client_socket2.connect(('192.168.43.203', 8002))
-
-# Make a file-like object out of the connection
-connection = client_socket.makefile('wb')
 play_sound("You are connected to the server, choose your service")
 
 while True:
-    if GPIO.input(10) == GPIO.HIGH or GPIO.input(8) == GPIO.HIGH:
+    if GPIO.input(10) == GPIO.HIGH or GPIO.input(8) == GPIO.HIGH or GPIO.input(12) == GPIO.HIGH or GPIO.input(11) == GPIO.HIGH or GPIO.input(13) == GPIO.HIGH: 
         first_button = GPIO.input(8)
         second_button = GPIO.input(10)
+        third_button= GPIO.input(11)
+        fourth_button = GPIO.input(12)
+        fifth_button = GPIO.input(13)
         # Choosing the service needed
-        # 01: face, 10: object
+        # 1: face, 2: object, 3: text
         if first_button:
-            service = "01"
+            service = "Facial recognition"
             play_sound(service)
         elif second_button:
-            service = "10"
+            service = "Object detection"
             play_sound(service)
 
-        connection.write(bytes(service, encoding='utf8'))
+        elif third_button:
+            play_sound("No video processing for text")
+        
+        elif fourth_button:
+            play_sound("Closing video processing")
+            break
 
-        # Send service
+        elif fifth_button:
+            play_sound("Wrong command")
 
+        client_socket.send(bytes(f"{service}", 'utf-8'))
+        # Make a file-like object out of the connection
+        connection = client_socket.makefile('wb')
         try:
             camera = picamera.PiCamera()
             camera.vflip = False
@@ -60,7 +70,6 @@ while True:
             start = time.time()
             stream = io.BytesIO()
             for foo in camera.capture_continuous(stream, 'jpeg'):
-                
                 # Write the length of the capture to the stream and flush to
                 # ensure it actually gets sent
                 connection.write(struct.pack('<L', stream.tell()))
@@ -71,21 +80,18 @@ while True:
                 # If we've been capturing for more than 30 seconds, quit
                 if time.time() - start > 60:
                     break
-                # Reset the stream for the next capture
-                stream.seek(0)
-                stream.truncate()
-            
+
                 result = client_socket2.recv(256).decode('utf-8')
                 if time.time() > last_time + 2:
                     play_sound(result)
                     last_time = time.time()
+                # Reset the stream for the next capture
+                stream.seek(0)
+                stream.truncate()
+
+                
             # Write a length of zero to the stream to signal we're done
             connection.write(struct.pack('<L', 0))
-            
-
-            
-            
-        
         finally:
             connection.close()
             client_socket.close()

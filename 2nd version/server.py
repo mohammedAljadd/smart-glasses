@@ -7,12 +7,13 @@ import matplotlib.pyplot as pl
 from threading import Thread
 from utils import *
 from time import time
+from config_server import *
 
 last_time = time()
 server_socket = socket.socket()
 server_socket2 = socket.socket()
-server_socket.bind(('192.168.43.203', 8000))  # ADD IP HERE
-server_socket2.bind(('192.168.43.203', 8002)) 
+server_socket.bind((ip_add, port1))  # ADD IP HERE
+server_socket2.bind((ip_add, port2)) 
 server_socket.listen(0)
 server_socket2.listen(0)
 client_socket,addr = server_socket2.accept()

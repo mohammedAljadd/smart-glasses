@@ -1,5 +1,7 @@
-app/static/
+Model training/Face identification/model_h5_format/*.h5
+Model training/Face identification/model_h5_formatF-trainer
 Model training/Face identification/dataset/
+app/static/
 raspberry pi codes/models
 Model training/Handwriting recognition/img/
 run.cmd
@@ -14,3 +16,7 @@ Model training/Face identification/cascades/
 2nd version/static/deep_learning_models
 Model training/Face identification/data.pickle/
 */.ipynb_checkpoints\facial-recognition-checkpoint.ipynb
+
+audio.mp3
+
+.gitignore
