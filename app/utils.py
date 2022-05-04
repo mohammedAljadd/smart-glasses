@@ -128,16 +128,29 @@ def results(model, classes):
     if model == "yolo":
         nb_classes = len(classes)
         if nb_classes == 0:
-            return "Rien n'est détecté"
+            return f"Rien n'est d\xe9tect\xe9"
         elif nb_classes == 1:
             return f"Il y'a {classes[0]}"
         else:
             result = Counter(classes)
+            new_listed = []
+            for e in result:
+                if result[e] > 1:
+                    x = e.split(' ')
+                    string = ' '.join([n for n in x[1:]])
+                    new_listed.append(str(result[e])+' '+string+'s')
+            else:
+                # Let 'un' or 'une' if the number of occurences is equal to 1.
+                new_listed.append(e)
+
+            # new_listed contains elements with their number of occurences. Eg: 3 bottles, 2 chairs.
+            
+            '''
             first = True
             for r in result:
                 if result[r] > 1:
                     if first:
-                        list_objects_counted.append("des "+str(result[r])+" "+r+"s")
+                        list_objects_counted.append(str(result[r])+" "+r+"s")
                         first = False
                     else:
                         list_objects_counted.append(str(result[r])+" "+r+"s")
@@ -151,6 +164,17 @@ def results(model, classes):
             n = len(list_objects_counted)
             i = 0
             for element in list_objects_counted:
+                if i < n-2:
+                    final_result += element+", "
+                elif i == n-2:
+                    final_result += element+" et "
+                else:
+                    final_result += element+"."
+                i += 1
+            '''
+            n = len(new_listed)
+            i = 0
+            for element in new_listed:
                 if i < n-2:
                     final_result += element+", "
                 elif i == n-2:

@@ -3,6 +3,8 @@ from app import app
 
 class DevelopmentConfig(object):
     
+    app.config['JSON_AS_ASCII'] = False
+    
     DEBUG = True
     
     ENV = "development"

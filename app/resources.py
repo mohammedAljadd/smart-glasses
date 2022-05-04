@@ -7,6 +7,7 @@ from flask import request, send_file
 import cv2
 import pytesseract
 import pathlib
+import json, jsonify
 import tensorflow as tf
 
 class Facial_Recognition(Resource):
@@ -83,6 +84,7 @@ class Object_Detection(Resource):
             # Yolo object detection
             classes = object_detection(image_path)
 
+            print(classes)
             # Describe the content of the image for the user (blind)
             describtion  = results(model="yolo", classes=classes)
 
@@ -92,7 +94,8 @@ class Object_Detection(Resource):
             response = {
                 "result": describtion
             }
-            return describtion
+            return describtion #json.dumps(describtion, ensure_ascii=False)
+            
 # Code pour faire Prédiction d'objets (le code est caché)
 
 class Text_recognition(Resource):
@@ -118,7 +121,7 @@ class Text_recognition(Resource):
                 
                 return str(result)
             else:
-                return "Aucun texte n'est détecté"
+                return "Aucun texte n'est d\xe9tect\xe9"
 
 # Handwritting recognition
 class Text_recognition_HTR(Resource):
