@@ -7,7 +7,7 @@ import tensorflow as tf
 def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_faces=0):
 
     if number_of_faces == 0 and predictions[0] == 5:
-        result = "There is no person."
+        result = "Il n'y a personne."
 
     else:
 
@@ -43,12 +43,12 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
             else:
                 return str(i)
 
-        result = "There "
+        result = "Il y'a "
         if number_of_faces == 1:
-            result += f"is {replace(occurences[0])} {CATEGORIES[predictions[0]]}"
+            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]}"
 
         elif number_of_faces == 2:
-            result += f"are {replace(occurences[0])} {CATEGORIES[predictions[0]]} and {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
+            result += f"{replace(occurences[0])} {CATEGORIES[predictions[0]]} et {replace(occurences[1])} {CATEGORIES[predictions[1]]}"
 
         else:
             
@@ -60,7 +60,7 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
                     else:
                         result += f"{replace(occurences[i])} {CATEGORIES[p]}, "
                 else:
-                    result += f"and {replace(occurences[i])} {CATEGORIES[p]}."
+                    result += f"et {replace(occurences[i])} {CATEGORIES[p]}."
                 i += 1
     return result
 
@@ -216,19 +216,31 @@ def text_translation(text):
 def results(classes):
     from collections import Counter
     list_objects_counted = []
-    final_result = "there is "
+    final_result = "Il y'a  "
     nb_classes = len(classes)
     if nb_classes == 0:
-        return "Nothing is detected"
+        return f"Rien n'est détecté"
     elif nb_classes == 1:
-        return f"There is {classes[0]}"
+        return f"Il y'a {classes[0]}"
     else:
         result = Counter(classes)
+        new_listed = []
+        for e in result:
+            if result[e] > 1:
+                x = e.split(' ')
+                string = ' '.join([n for n in x[1:]])
+                new_listed.append(str(result[e])+' '+string+'s')
+            else:
+                # Let 'un' or 'une' if the number of occurences is equal to 1.
+                new_listed.append(e)
+        # new_listed contains elements with their number of occurences. Eg: 3 bottles, 2 chairs.
+        
+        '''
         first = True
         for r in result:
             if result[r] > 1:
                 if first:
-                    list_objects_counted.append("a "+str(result[r])+" "+r+"s")
+                    list_objects_counted.append(str(result[r])+" "+r+"s")
                     first = False
                 else:
                     list_objects_counted.append(str(result[r])+" "+r+"s")
@@ -245,7 +257,18 @@ def results(classes):
             if i < n-2:
                 final_result += element+", "
             elif i == n-2:
-                final_result += element+" and "
+                final_result += element+" et "
+            else:
+                final_result += element+"."
+            i += 1
+        '''
+        n = len(new_listed)
+        i = 0
+        for element in new_listed:
+            if i < n-2:
+                final_result += element+", "
+            elif i == n-2:
+                final_result += element+" et "
             else:
                 final_result += element+"."
             i += 1

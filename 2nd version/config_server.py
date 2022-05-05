@@ -13,7 +13,7 @@ CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "Y
 CAMERA_IP_ADD = "http://192.168.43.1:8080/video"
 
 # Socket IP and ports
-ip_add = '192.168.43.232'
+ip_add = '192.168.43.203'
 port1 = 8000
 port2 = 8002
 
