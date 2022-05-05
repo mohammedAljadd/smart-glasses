@@ -80,11 +80,11 @@ while True:
             try:
                 image = {'image': open('v1/img/picture.jpg', 'rb')}
                 # waiting 5 seconds, if not response, switch to offline mode
-                print("Sending the image to API")
+                print("Sending to API")
                 r = requests.post(API_IP_ADD+path, files=image, timeout=10) 
-                print("the http request is sent successfully")
-                print(r.text)
-                play_sound(r.text)
+                result = r.json()
+                print(result)
+                play_sound(result)
             except Timeout:
                 print("La connexion Internet est lente, veuillez réessayer")
                 play_sound("La connexion Internet est lente, veuillez réessayer")

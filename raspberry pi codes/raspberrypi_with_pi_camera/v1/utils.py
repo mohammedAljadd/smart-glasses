@@ -8,7 +8,7 @@ def play_sound(text):
     
     audio = gTTS(
             text=text, 
-            lang="en", slow=False
+            lang="fr", slow=False
             )
     audio_file_path = "audio/audio.mp3"
     audio.save(audio_file_path)

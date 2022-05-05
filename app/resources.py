@@ -84,17 +84,17 @@ class Object_Detection(Resource):
             # Yolo object detection
             classes = object_detection(image_path)
 
-            print(classes)
             # Describe the content of the image for the user (blind)
             describtion  = results(model="yolo", classes=classes)
 
             # Create an audio file from the previous text
-            audio = generate_audio(describtion)
+            #audio = generate_audio(describtion)
             #return send_from_directory(directory=app.config['AUDIO_FOLDER'], path="audio.mp3", as_attachment=True)
-            response = {
+            result = [{
                 "result": describtion
-            }
-            return describtion #json.dumps(describtion, ensure_ascii=False)
+            }]
+            return  describtion
+            
             
 # Code pour faire Prédiction d'objets (le code est caché)
 
@@ -121,7 +121,7 @@ class Text_recognition(Resource):
                 
                 return str(result)
             else:
-                return "Aucun texte n'est d\xe9tect\xe9"
+                return "Aucun texte n'est détecté"
 
 # Handwritting recognition
 class Text_recognition_HTR(Resource):

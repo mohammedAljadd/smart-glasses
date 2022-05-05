@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from v1.utils import play_sound
 import sys
+import pickle
 sys.path.append('v1/')
 sys.path.append('v2/')
 sys.path.append('v1/img/')

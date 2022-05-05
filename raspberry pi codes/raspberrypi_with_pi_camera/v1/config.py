@@ -1,7 +1,7 @@
 import cv2
 
 # API ip adress
-API_IP_ADD = "http://192.168.43.232:5000/"
+API_IP_ADD = "http://192.168.43.203:5000/"
 
 
 # Facial recognition classes

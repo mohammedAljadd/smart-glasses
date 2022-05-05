@@ -128,7 +128,7 @@ def results(model, classes):
     if model == "yolo":
         nb_classes = len(classes)
         if nb_classes == 0:
-            return f"Rien n'est d\xe9tect\xe9"
+            return f"Rien n'est détecté"
         elif nb_classes == 1:
             return f"Il y'a {classes[0]}"
         else:
@@ -139,10 +139,9 @@ def results(model, classes):
                     x = e.split(' ')
                     string = ' '.join([n for n in x[1:]])
                     new_listed.append(str(result[e])+' '+string+'s')
-            else:
-                # Let 'un' or 'une' if the number of occurences is equal to 1.
-                new_listed.append(e)
-
+                else:
+                    # Let 'un' or 'une' if the number of occurences is equal to 1.
+                    new_listed.append(e)
             # new_listed contains elements with their number of occurences. Eg: 3 bottles, 2 chairs.
             
             '''
