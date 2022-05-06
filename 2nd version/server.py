@@ -17,14 +17,14 @@ server_socket2.bind((ip_add, port2))
 server_socket.listen(0)
 server_socket2.listen(0)
 
-print("Listening on" + str(ip_add)+ ", "+port1+", "+port2)
+print("Listening on " + str(ip_add)+ ", "+str(port1)+", "+str(port2))
 client_socket,addr = server_socket2.accept()
 # Accept a single connection and make a file-like object out of it
 connection = server_socket.accept()[0].makefile('rb')
 
 # Receive option from raspberry pi
-service = connection.readline(2).decode("UTF-8")
-
+print('receiving option')
+service = connection.readline(2).decode("UTF-8") #
 
 
 

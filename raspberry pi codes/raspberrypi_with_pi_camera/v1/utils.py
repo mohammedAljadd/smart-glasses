@@ -1,7 +1,8 @@
 from gtts import gTTS
 import pygame
-
+import cv2
 from time import sleep
+from v1.config import *
 
 # Text to audio
 def play_sound(text):
@@ -37,8 +38,6 @@ def service(option):
 # Taking picture function (raspberry pi cam module)
 def take_picture_cam_module(camera): 
     try:
-        
-
         camera.start_preview()
         sleep(0.5)
         camera.capture('v1/img/picture.jpg')
@@ -51,3 +50,21 @@ def take_picture_cam_module(camera):
         
 
 
+# Taking picture function (esp-32 cam)
+def take_picture(is_api=True):  
+    try:
+        print("La prise de photo ...")
+        vid = cv2.VideoCapture(CAMERA_IP_ADD)
+
+        while(True):
+            ret, frame = vid.read()
+            if cv2.imwrite("img/picture.jpg", frame):
+                vid.release()
+                cv2.destroyAllWindows()
+                play_sound("The photo is taken")
+                return True
+        
+    except:
+        print("La prise de photo a échoué")
+        play_sound("La prise de photo a échoué")
+        return False

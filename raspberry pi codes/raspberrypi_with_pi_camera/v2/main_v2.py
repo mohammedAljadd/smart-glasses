@@ -21,6 +21,7 @@ GPIO.setup(8, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 client_socket = socket.socket()
 client_socket2 = socket.socket()
 client_socket.settimeout(10.0)
+last_time = time.time()
 while True:
         
     try:
@@ -41,9 +42,11 @@ while True:
                 # 1: face, 2: object, 3: text
                 if first_button:
                     service = "Reconnaissance faciale"
+                    sent_service = "10"
                     play_sound(service)
                 elif second_button:
                     service = "Détection d'objet"
+                    sent_service = "01"
                     play_sound(service)
 
                 elif third_button:
@@ -62,7 +65,7 @@ while True:
                 
                 
                 if fourth_button != True or third_button != True or fifth_button != True:
-                    client_socket.send(bytes(f"{service}", 'utf-8'))
+                    client_socket.send(bytes(f"{sent_service}", 'utf-8'))
                     # Make a file-like object out of the connection
                     connection = client_socket.makefile('wb')
                     try:

@@ -1,3 +1,4 @@
+from numpy import unicode_
 import requests
 import RPi.GPIO as GPIO
 from config import *
@@ -22,7 +23,7 @@ GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 camera = PiCamera()
 
 
-
+print("De quel service avez-vous besoin?")
 play_sound("De quel service avez-vous besoin?")
 
 # Wait for push button
@@ -64,6 +65,7 @@ while True:
         # Taking a picture
         take_picture_cam_module(camera)
         
+        #take_picture(is_api=True)
 
 
         
@@ -83,7 +85,16 @@ while True:
                 print("Sending to API")
                 r = requests.post(API_IP_ADD+path, files=image, timeout=10) 
                 result = r.json()
+                # Decode french characters
+                result = result.replace('Ã©', 'é')
                 print(result)
+                result = result.replace('Ãª', 'ê')
+                print(result)
+                result = result.replace('Ã¨', 'è')
+                print(result)
+                result = result.replace('Ã', 'à')
+                print(result)
+                
                 play_sound(result)
             except Timeout:
                 print("La connexion Internet est lente, veuillez réessayer")
