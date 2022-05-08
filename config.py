@@ -17,6 +17,8 @@ class DevelopmentConfig(object):
 
     FACE_RECOGNITION_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\deep_learning_models\\Face_recognition")
     
+    HTR_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\deep_learning_models\\HTR")
+
     IMAGE_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\image\\")
   
     AUDIO_FOLDER = os.path.join(os.path.dirname(__file__), "app\\static\\audio\\")
@@ -26,3 +28,5 @@ class DevelopmentConfig(object):
     IMG_SIZE = 32
 
     CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "personne inconnue", "il n'y a personne"]
+    
+    

@@ -1,0 +1,17 @@
+https://nerdiy.de/en/howto-raspberrypi-standardlautsprecher-konfigurieren/
+
+bluetoothctl
+agent on
+paired-devices
+scan on
+info 37:52:2F:E8:D9:B9
+trust 37:52:2F:E8:D9:B9
+pair 37:52:2F:E8:D9:B9
+connect 37:52:2F:E8:D9:B9
+remove 37:52:2F:E8:D9:B9
+
+
+sudo nano /etc/pulse/default.pa
+load-module module-bluetooth-policy
+load-module module-bluez5-device
+load-module module-bluez5-discover

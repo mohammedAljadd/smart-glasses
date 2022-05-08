@@ -1,6 +1,7 @@
 from importlib.resources import path
 from unicodedata import name
 from urllib import response
+from cv2 import exp
 from flask_restful import  Resource
 from app.utils import *
 from flask import request, send_file
@@ -44,7 +45,7 @@ class Facial_Recognition(Resource):
             predictions = []
 
             # Detect the face with face_cascade
-            faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.3, minNeighbors=8)
+            faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
             
             if len(faces) != 0:
                 
@@ -57,7 +58,7 @@ class Facial_Recognition(Resource):
                     face_input = tf.keras.utils.normalize(face_expanded, axis=1)
 
                     # Make prediction
-                    index = predict(face_input, threshold=0.7)
+                    index = predict(face_input, threshold=0.5)
                     predictions.append(index)
                 #predictions = list(set(predictions))
                 # Count number faces
@@ -133,64 +134,97 @@ class Text_recognition_HTR(Resource):
             image.save(image_path)
             origineImage = cv2.imread(image_path)
             
-            # Grayscale
-            image = cv2.cvtColor(origineImage,cv2.COLOR_BGR2GRAY)
-            
-            # image binarization
-            retval, img = cv2.threshold(image,127,255,cv2.THRESH_BINARY_INV)
-
-             #length and width of image
-            (h,w)=img.shape
-            Position = []
-
-            #horizontal projection
-            H = getHProjection(img)
-            start = 0
-            H_Start = []
-            H_End = []
-
-            #find the location where we can cut by horizontal projection
-            for i in range(len(H)):
-                if H[i] > 0 and start ==0:
-                    H_Start.append(i)
-                    start = 1
-                if H[i] <= 0 and start == 1:
-                    H_End.append(i)
-                    start = 0
-
-            #cut the lines and store the location to cut
-            for i in range(len(H_Start)):
+            try:
+                    
+                # Grayscale
+                image = cv2.cvtColor(origineImage,cv2.COLOR_BGR2GRAY)
                 
-                # Image of every line
-                cropImg = img[H_Start[i]:H_End[i], 0:w]
+                # image binarization
+                retval, img = cv2.threshold(image,127,255,cv2.THRESH_BINARY_INV)
 
-                #cut vertically by image of line
-                W = getVProjection(cropImg)
-                Wstart = 0
-                Wend = 0
-                W_Start = 0
-                W_End = 0
-                
-                for j in range(len(W)):
-                    if W[j] > 0 and Wstart ==0:
-                        W_Start =j
-                        Wstart = 1
-                        Wend=0
+                #length and width of image
+                (h,w)=img.shape
+                Position = []
 
-                    if W[j] <= 0 and Wstart == 1:
-                        W_End =j
-                        Wstart = 0
-                        Wend=1
-                    if Wend == 1:
-                        Position.append([W_Start,H_Start[i],W_End,H_End[i]])
-                        Wend =0
+                #horizontal projection
+                H = getHProjection(img)
+                start = 0
+                H_Start = []
+                H_End = []
 
-            #enclose every letter
+                #find the location where we can cut by horizontal projection
+                for i in range(len(H)):
+                    if H[i] > 0 and start ==0:
+                        H_Start.append(i)
+                        start = 1
+                    if H[i] <= 0 and start == 1:
+                        H_End.append(i)
+                        start = 0
 
-            for m in range(len(Position)):
-                cv2.rectangle(origineImage, (Position[m][0],Position[m][1]), (Position[m][2],Position[m][3]), (0 ,229 ,238), 1)
+                #cut the lines and store the location to cut
+                for i in range(len(H_Start)):
+                    
+                    # Image of every line
+                    cropImg = img[H_Start[i]:H_End[i], 0:w]
 
-            imageSEG_path = f"{app.config['IMAGE_FOLDER']}"+"/seg.jpg"
-            cv2.imwrite(imageSEG_path, origineImage)
+                    #cut vertically by image of line
+                    W = getVProjection(cropImg)
+                    Wstart = 0
+                    Wend = 0
+                    W_Start = 0
+                    W_End = 0
+                    
+                    for j in range(len(W)):
+                        if W[j] > 0 and Wstart ==0:
+                            W_Start =j
+                            Wstart = 1
+                            Wend=0
+
+                        if W[j] <= 0 and Wstart == 1:
+                            W_End =j
+                            Wstart = 0
+                            Wend=1
+                        if Wend == 1:
+                            Position.append([W_Start,H_Start[i],W_End,H_End[i]])
+                            Wend =0
+
+                #enclose every letter
+                roi_path = f"{app.config['IMAGE_FOLDER']}"+"/segmentation"
+                imageSEG_path = f"{app.config['IMAGE_FOLDER']}"+"/segmentation/seg.jpg"
+                i = 0
+                result = ""
+                htr_model = get_htr_model()
+                output_labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
+                    'A','B','C','D','E','F','G','H','I','J','K','L','M',
+                    'N', 'O','P','Q','R','S', 'T','U','V','W','X','Y','Z']
+
+                for m in range(len(Position)):
+                    cv2.rectangle(origineImage, (Position[m][0],Position[m][1]), (Position[m][2],Position[m][3]), (0 ,229 ,238), 1)
+                    # Save each character
+                    roi = origineImage[Position[m][1]:Position[m][3], Position[m][0]:Position[m][2]]
+                    cv2.imwrite(roi_path+f"/roi{i}.jpg", roi)
+                    i += 1
+                    # Run prediction on each character
+                    
+                    image = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+                    
+                    
+                    
+                    image = cv2.resize(image, (28, 28))
+                    image = cv2.bitwise_not(image)  # Make images in binary format
+                    
+                    image_norm = tf.keras.utils.normalize(image, axis=1)
+                    
+                    image_expanded = np.expand_dims(image_norm, axis=0)
+                    
+                    prediction = htr_model.predict(image_expanded)
+                    
+                    index = np.argmax(prediction[0])
+                    result += output_labels[index]
+                    
+                cv2.imwrite(imageSEG_path, origineImage)
             
-            return send_file(imageSEG_path, mimetype='image/gif')
+                return result
+
+            except:
+                return "Aucun test n'est détecté"

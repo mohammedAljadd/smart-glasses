@@ -10,6 +10,8 @@ from mutagen.wave import WAVE
 from googletrans import Translator
 import os
 from tensorflow.keras.models import load_model
+import  tensorflow as tf
+from app import app
 
 
 
@@ -32,7 +34,12 @@ def get_model():
     return model
 
 
-    
+def get_htr_model():
+    from app import app
+    global model
+    model = load_model(os.path.join(app.config['HTR_FOLDER'],'htr_model.h5'))
+    return model    
+
 def predict(image, threshold):
     from app import app
     model = get_model()
@@ -338,3 +345,13 @@ def getVProjection(image):
     return w_
 
  
+def htr_model(image, model):
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    image = cv2.resize(image, (28, 28))
+    image = cv2.bitwise_not(image)  # Make images in binary format
+    image_norm = tf.keras.utils.normalize(image, axis=1)
+    image_expanded = np.expand_dims(image_norm, axis=0)
+    prediction = model.predict(image_expanded)
+    index = np.argmax(prediction[0])
+    return output_labels[index]
+    
