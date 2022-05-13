@@ -1,3 +1,4 @@
+Model training/Face identification/FaceNet_src/
 Model training/Face identification/model_h5_format/*.h5
 Model training/Face identification/model_h5_formatF-trainer
 Model training/Face identification/dataset/
