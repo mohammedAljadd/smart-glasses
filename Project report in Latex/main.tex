@@ -1,9 +1,23 @@
+% Text size is 12pt
 \documentclass[12pt]{report}
 \usepackage{multicol}
 \usepackage{titlesec}
 \usepackage{afterpage}
+\usepackage{graphicx}
+\usepackage{duckuments}
+\usepackage{diagbox}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage{subfig}
+\usepackage{movie15}
+\usepackage[export]{adjustbox}
 \usepackage{fancyhdr}
+\usepackage{wrapfig} 
+% firstpage=true : background  for first page only
+\usepackage[firstpage=true]{background}
+\usepackage[none]{hyphenat}
 \usepackage{float}
+\usepackage{eso-pic}
 \setcounter{tocdepth}{5}
 \setcounter{secnumdepth}{5}
 \usepackage[backend=biber,style=ieee]{biblatex}
@@ -22,23 +36,27 @@
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \begin{document}
 
+% header background : https://tex.stackexchange.com/questions/271666/how-to-set-a-background-image-for-the-header
+\backgroundsetup{contents={\includegraphics[width=\textwidth]{background.jpg}},scale=1,placement=top,opacity=0.1,position={5.85cm,2.5cm}}
+
+
+
 %	HEADER -----------------------------------------------------------
 
 \begin{center}
 %	HEADING & LOGO
 
 \Huge{L’Institut National des Sciences Appliquées de Rennes}\\[.5cm]
-\huge{INSA Rennes}\\[.5cm]
 
 \Large
-Électronique et Communication (E\&T)\\[1cm] 
-\includegraphics[width=14cm, height=7cm]{4-Images/insa_logo.jpg}\\[0.5cm]
+4 E\&T\\[1cm] 
+\includegraphics[width=15cm, height=8.75cm]{4-Images/smart.jpg}\\[0.5cm]
 %%%%%%%%%%%%%%%%%%%%%%%%%%\includegraphics[width=1cm, height=0.7cm]{4-Images/smart.png}\\[2cm]
 
 %	TITLE 
 \sffamily
 \noindent\rule{15cm}{2pt}\\[0.4cm]
-\textbf{\Huge Smart Glasses for blind people}\\[0.2cm] 
+\textbf{\Huge Soutenance du projet Elec}\\[0.2cm] 
 \noindent\rule{15cm}{2pt}\\[1cm]
 %	AUTHORS & SUPERVISOR
 \large
@@ -47,20 +65,18 @@
 \emph{\textbf{\Large Membres:}}\\
 AL JADD Mohammed (coordinateur)\\
 EL-ASRI Nossaiba\\
-YE Langze\\
-EL NABAOUI Nouhaila\\
 AHMED Ouassou \\
+YE Langze\\
 AIT JILALI Nouhaila\\
-BENJELLOUNE Boutaina\\
+EL NABAOUI Nouhaila\\
 \end{flushleft}
 
 \end{minipage}\hfill\begin{minipage}[t]{.4\textwidth}
 
 \begin{flushright}
-\emph{\textbf{\Large Encadrants:}}
+\emph{\textbf{\Large Tuteur:}}
 
-Christophe Lemoine\\
-Fabienne Nouvel\\
+Mme. Fabienne Nouvel\\
 \end{flushright}
 \end{minipage}
 \\[1cm]
