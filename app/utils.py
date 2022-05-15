@@ -1,18 +1,16 @@
-from email.mime import image
-import imp
+
 from pyexpat import model
 from sre_parse import CATEGORIES
-from statistics import mode
 import numpy as np
 import cv2
 from gtts import gTTS
-from mutagen.wave import WAVE
 from googletrans import Translator
 import os
 from tensorflow.keras.models import load_model
 import  tensorflow as tf
 from app import app
 
+htr_image_path= "C:/Users/install.PO-ETU007/Desktop/MyProjects/iEars/app/static/image/htr_results"
 
 
 def generate_audio(string):
@@ -270,88 +268,40 @@ def result_face_recognition(predictions=[5], CATEGORIES=CATEGORIES, number_of_fa
     return result
 
 
-# Functions for Handwritting recognition
-
-def getHProjection(image):
-
+def getHProjection(image, save_path=htr_image_path):
     hProjection = np.zeros(image.shape,np.uint8)
-
     #height and width of image
-
     (h,w)=image.shape
-
     #length of array same as height of image
- 
     h_ = [0]*h
-
     #count up the number of white pixels in every line
-
     for y in range(h):
-
         for x in range(w):
-
             if image[y,x] == 255:
-
                 h_[y]+=1
-
     #draw the horizontal projection 
-
     for y in range(h):
-
         for x in range(h_[y]):
-
             hProjection[y,x] = 255
-
-    ##################################################cv2.imshow('hProjection2',hProjection)
-
- 
-
     return h_
 
  
-
-def getVProjection(image):
-
+def getVProjection(image, save_path=htr_image_path):
     vProjection = np.zeros(image.shape,np.uint8);
-
     #heigth and width of image
-
     (h,w) = image.shape
-
     #length of array same as width of image
-
     w_ = [0]*w
-
     #count up the number of white pixels in every column
-
     for x in range(w):
-
         for y in range(h):
-
             if image[y,x] == 255:
-
                 w_[x]+=1
 
     #draw the projection vertical
-
     for x in range(w):
-
         for y in range(h-w_[x],h):
-
             vProjection[y,x] = 255
-
-    #cv2.imshow('vProjection',vProjection)
-
     return w_
 
- 
-def htr_model(image, model):
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    image = cv2.resize(image, (28, 28))
-    image = cv2.bitwise_not(image)  # Make images in binary format
-    image_norm = tf.keras.utils.normalize(image, axis=1)
-    image_expanded = np.expand_dims(image_norm, axis=0)
-    prediction = model.predict(image_expanded)
-    index = np.argmax(prediction[0])
-    return output_labels[index]
     

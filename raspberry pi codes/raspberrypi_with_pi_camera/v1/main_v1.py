@@ -8,7 +8,6 @@ from requests.exceptions import Timeout
 from picamera import PiCamera
 
 
-
 # GPIO configuration
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
@@ -41,14 +40,17 @@ while True:
         # 1: face, 2: object, 3: text
         if first_button:
             path = service(1)
+            print("Reconnaissance faciale")
             play_sound("Reconnaissance faciale")
 
         elif second_button:
             path = service(2)
+            print("Détection d'objet")
             play_sound("Détection d'objet")
 
         elif third_button:
             path = service(3)
+            print("Reconnaissance de texte")
             play_sound("Reconnaissance de texte")
         
         elif fourth_button:
@@ -58,6 +60,7 @@ while True:
             
         elif fifth_button:
             play_sound("Fermeture du mode image")
+            camera.close()
             break
 
 
@@ -87,18 +90,19 @@ while True:
                 result = r.json()
                 # Decode french characters
                 result = result.replace('Ã©', 'é')
-                print(result)
+                
                 result = result.replace('Ãª', 'ê')
-                print(result)
+                
                 result = result.replace('Ã¨', 'è')
-                print(result)
+                
                 result = result.replace('Ã', 'à')
                 print(result)
                 
                 play_sound(result)
             except Timeout:
-                print("La connexion Internet est lente, veuillez réessayer")
-                play_sound("La connexion Internet est lente, veuillez réessayer")
+                print("La connexion Internet est lente, On passe au mode hors ligne")
+                camera.close()
+                exec(open("v1/main_v1_offline.py").read())
             
         else:
             fourth_button = False

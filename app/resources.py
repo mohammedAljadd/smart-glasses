@@ -7,9 +7,8 @@ from app.utils import *
 from flask import request, send_file
 import cv2
 import pytesseract
-import pathlib
-import json, jsonify
 import tensorflow as tf
+from tensorflow.keras.applications.vgg16 import preprocess_input 
 
 class Facial_Recognition(Resource):
     def post(self):
@@ -21,8 +20,8 @@ class Facial_Recognition(Resource):
             imgs_path = app.config['IMAGE_FOLDER']
 
             # Image size that the model was trained on
-            IMG_SIZE = app.config['IMG_SIZE'] 
-
+            #IMG_SIZE = app.config['IMG_SIZE'] 
+            IMG_SIZE = 224
             CATEGORIES = app.config["CATEGORIES"]
 
             # Face cascade xml file
@@ -38,27 +37,29 @@ class Facial_Recognition(Resource):
             image_path = imgs_path+image_name
             image.save(image_path)
             
-            # Grayscale
-            gray_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+            # RGB scale
+            original_image = cv2.imread(image_path)
+            image_rgb = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
 
             # Detected classes indexes
             predictions = []
 
             # Detect the face with face_cascade
-            faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.05, minNeighbors=5)
+            faces = face_cascade.detectMultiScale(image_rgb, scaleFactor=1.05, minNeighbors=5)
             
             if len(faces) != 0:
                 
                 for (x, y, w, h) in faces:
-                    face = gray_image[y:y+h, x:x+w]
+                    face = image_rgb[y:y+h, x:x+w]
                     face_resized = cv2.resize(face, (IMG_SIZE, IMG_SIZE)) 
-                    face_expanded = np.expand_dims(face_resized, axis=0)
+                    pre_image = preprocess_input(face_resized)
+                    face_expanded = np.expand_dims(pre_image, axis=0)
 
                     # Normalize the image, the model was trained on normalized images
-                    face_input = tf.keras.utils.normalize(face_expanded, axis=1)
+                    # face_input = tf.keras.utils.normalize(face_expanded, axis=1)
 
                     # Make prediction
-                    index = predict(face_input, threshold=0.5)
+                    index = predict(face_expanded, threshold=0.5)
                     predictions.append(index)
                 #predictions = list(set(predictions))
                 # Count number faces
@@ -131,100 +132,71 @@ class Text_recognition_HTR(Resource):
             from app import app
             image = request.files["image"]
             image_path = f"{app.config['IMAGE_FOLDER']}"+"/"+image.filename
+            
+            htr_image_path= "C:/Users/install.PO-ETU007/Desktop/MyProjects/iEars/app/static/htr_results"
             image.save(image_path)
             origineImage = cv2.imread(image_path)
             
-            try:
-                    
-                # Grayscale
-                image = cv2.cvtColor(origineImage,cv2.COLOR_BGR2GRAY)
+            #try:    
+            # give the origin image
+            image = cv2.cvtColor(origineImage,cv2.COLOR_BGR2GRAY)
+            # image binarization
+            retval, img = cv2.threshold(image,127,255,cv2.THRESH_BINARY_INV)
+            # length and width of image
+            (h,w)=img.shape
+            Position = []
+            #horizontal projection
+            H = getHProjection(img)
+            start = 0
+            H_Start = []
+            H_End = []
+            # find the location where we can cut by horizontal projection
+            for i in range(len(H)):
+                if H[i] > 2 and start ==0:
+                    H_Start.append(i)
+                    start = 1
+                if H[i] <= 2 and start == 1:
+                    H_End.append(i)
+                    start = 0
+
+            # cut the lines and store the location to cut
+            for i in range(len(H_Start)):
+                # the image of every line
+                cropImg = img[H_Start[i]:H_End[i], 0:w]
+                cv2.imwrite(os.path.join(htr_image_path,f"lignes/ligne{i}.jpg"),cropImg)
+
+                # cut vertically by image of line
+                W = getVProjection(cropImg)
+                Wstart = 0
+                Wend = 0
+                W_Start = 0
+                W_End = 0
+                for j in range(len(W)):
+                    if W[j] > 1 and Wstart ==0:
+                        W_Start =j
+                        Wstart = 1
+                        Wend=0
+                    if W[j] <= 1 and Wstart == 1:
+                        W_End =j
+                        Wstart = 0
+                        Wend=1
+                    if Wend == 1:
+                        Position.append([W_Start,H_Start[i],W_End,H_End[i]])
+                        Wend =0
+
+            # Prediction using simpleHtr
+            import sys
+
+            sys.path.append(os.path.join(os.path.dirname(__file__), "SimpleHTR-master\\src"))
+            sys.path.append(os.path.join(os.path.dirname(__file__), "SimpleHTR-master\\data"))
+            sys.path.append(os.path.join(os.path.dirname(__file__), "SimpleHTR-master\\doc"))
+            sys.path.append(os.path.join(os.path.dirname(__file__), "SimpleHTR-master\\model"))
+            file_path = os.path.join(os.path.dirname(__file__), "SimpleHTR-master\\src\\main.py")
+            exec(open(file_path).read())
                 
-                # image binarization
-                retval, img = cv2.threshold(image,127,255,cv2.THRESH_BINARY_INV)
+            #C:/Users/install.PO-ETU007/Desktop/MyProjects/iEars/app/static/deep_learning_models/HTR/SimpleHTR/SimpleHTR-master/SimpleHTR-master/src/main.py"
+            result = open('C:/Users/install.PO-ETU007/Desktop/MyProjects\iEars/htr_results.txt', 'r+').read()
+            return result
 
-                #length and width of image
-                (h,w)=img.shape
-                Position = []
-
-                #horizontal projection
-                H = getHProjection(img)
-                start = 0
-                H_Start = []
-                H_End = []
-
-                #find the location where we can cut by horizontal projection
-                for i in range(len(H)):
-                    if H[i] > 0 and start ==0:
-                        H_Start.append(i)
-                        start = 1
-                    if H[i] <= 0 and start == 1:
-                        H_End.append(i)
-                        start = 0
-
-                #cut the lines and store the location to cut
-                for i in range(len(H_Start)):
-                    
-                    # Image of every line
-                    cropImg = img[H_Start[i]:H_End[i], 0:w]
-
-                    #cut vertically by image of line
-                    W = getVProjection(cropImg)
-                    Wstart = 0
-                    Wend = 0
-                    W_Start = 0
-                    W_End = 0
-                    
-                    for j in range(len(W)):
-                        if W[j] > 0 and Wstart ==0:
-                            W_Start =j
-                            Wstart = 1
-                            Wend=0
-
-                        if W[j] <= 0 and Wstart == 1:
-                            W_End =j
-                            Wstart = 0
-                            Wend=1
-                        if Wend == 1:
-                            Position.append([W_Start,H_Start[i],W_End,H_End[i]])
-                            Wend =0
-
-                #enclose every letter
-                roi_path = f"{app.config['IMAGE_FOLDER']}"+"/segmentation"
-                imageSEG_path = f"{app.config['IMAGE_FOLDER']}"+"/segmentation/seg.jpg"
-                i = 0
-                result = ""
-                htr_model = get_htr_model()
-                output_labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
-                    'A','B','C','D','E','F','G','H','I','J','K','L','M',
-                    'N', 'O','P','Q','R','S', 'T','U','V','W','X','Y','Z']
-
-                for m in range(len(Position)):
-                    cv2.rectangle(origineImage, (Position[m][0],Position[m][1]), (Position[m][2],Position[m][3]), (0 ,229 ,238), 1)
-                    # Save each character
-                    roi = origineImage[Position[m][1]:Position[m][3], Position[m][0]:Position[m][2]]
-                    cv2.imwrite(roi_path+f"/roi{i}.jpg", roi)
-                    i += 1
-                    # Run prediction on each character
-                    
-                    image = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
-                    
-                    
-                    
-                    image = cv2.resize(image, (28, 28))
-                    image = cv2.bitwise_not(image)  # Make images in binary format
-                    
-                    image_norm = tf.keras.utils.normalize(image, axis=1)
-                    
-                    image_expanded = np.expand_dims(image_norm, axis=0)
-                    
-                    prediction = htr_model.predict(image_expanded)
-                    
-                    index = np.argmax(prediction[0])
-                    result += output_labels[index]
-                    
-                cv2.imwrite(imageSEG_path, origineImage)
-            
-                return result
-
-            except:
-                return "Aucun test n'est détecté"
+            #except:
+             #   return "Aucun test n'est détecté"

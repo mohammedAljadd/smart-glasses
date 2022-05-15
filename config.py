@@ -29,4 +29,5 @@ class DevelopmentConfig(object):
 
     CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "YE Langze", "personne inconnue", "il n'y a personne"]
     
-    
+    # HTR image path
+    #HTR_IMAGE_PATH = os.path.join(os.path.dirname(__file__), "app\\static\\image\\htr_results")

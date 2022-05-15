@@ -1,5 +1,5 @@
 https://nerdiy.de/en/howto-raspberrypi-standardlautsprecher-konfigurieren/
-
+alsamixer : change volume
 bluetoothctl
 agent on
 paired-devices

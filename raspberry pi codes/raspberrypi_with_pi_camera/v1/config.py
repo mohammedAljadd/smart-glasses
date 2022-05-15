@@ -12,4 +12,4 @@ CATEGORIES = ["AL Jadd Mohammed", "EL ASRI Nossaiba", "EL NOUBAOUI Nouhaila", "Y
 IMG_SIZE = 32
 
 # Image path
-image_path = "img/picture.jpg"
+image_path = "/home/pi/Desktop/rasp-elec/v1/img/picture.jpg"
