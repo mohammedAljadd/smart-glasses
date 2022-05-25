@@ -1,17 +1,17 @@
 # Overview
 
-Hello everyone, this is a project we are working as a team of 7 members in our engineering school [INSA Rennes](https://www.insa-rennes.fr/). The idea is to design and build smart glasses for blind people. We named our product ***iEars*** because the user uses his ears to sense the environment.
+Hello everyone, this is a project we are working as a team of 6 members in our engineering school [INSA Rennes](https://www.insa-rennes.fr/). The idea is to design and build a smart glasses for blind people.
 
 The three main services of our product are:
     
     - Facial recognition.
     - Object detection.
-    - Text recognition and translation.
+    - Text recognition.
 
 There will be two modes for using the product:
 
-    - First mode is image processing. 
-    - Second mode is real-time processing.
+    - Image mode : Process images. 
+    - Video mode : process a real-time video.
 
 So, the user has the choice to choose between image processing or real-time processing for better experience.  
 
