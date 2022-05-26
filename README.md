@@ -1,5 +1,5 @@
 # Overview
-<img src="https://github.com/mohammedAljadd/smart-glasses/blob/main/smart-glasses-design.jpg" width="10cm">
+<img src="https://github.com/mohammedAljadd/smart-glasses/blob/main/smart-glasses-design.jpg" width="900">
 This is a project in our engineering school [INSA Rennes](https://www.insa-rennes.fr/). The idea is to design and build a smart glasses for blind people.
 
 Team members :
