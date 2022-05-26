@@ -1,8 +1,10 @@
-# Overview
+# 1-Overview
 <img src="https://github.com/mohammedAljadd/smart-glasses/blob/main/smart-glasses-design.jpg" width="900">
-This is a project in our engineering school [INSA Rennes](https://www.insa-rennes.fr/). The idea is to design and build a smart glasses for blind people.
+This is a project in our engineering school INSA Rennes. The idea is to design and build a smart glasses for blind people.
 
-Team members :
+[INSA Rennes website](https://www.insa-rennes.fr/)
+
+#### Team members :
 
 [AL JADD Mohammed](https://www.linkedin.com/in/aljadd/) (the project coordinator)
 
@@ -15,6 +17,8 @@ Team members :
 YE Langze
 
 OUASSOU Ahmed
+
+#### Product services :
 
 The three main services of our product are:
     
@@ -30,7 +34,9 @@ There will be two modes to use the product:
 So, the user has the choice to choose between image processing or real-time processing for better experience.  
 
 
+# 2 Product hardware and software :
 
+# 2-1 Overview
 
 
 
