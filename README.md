@@ -36,21 +36,39 @@ So, the user has the choice to choose between image processing or real-time proc
 
 # 2 Product hardware and software :
 
-# 2-1 Overview
+## 2-1 Overview
 
+Our smart glasses are built on a Raspberry Pi 4 platform, offering a portable and accessible solution for the visually impaired. The glasses are designed with a user-friendly interface featuring buttons to facilitate mode selection (image or video) and task assignment (OCR, object detection, or facial recognition).
 
+### Connectivity and Computation:
 
+In scenarios without an active internet connection, the Raspberry Pi 4 handles data processing locally. However, to expedite computations and enhance performance, when an internet connection is available, the glasses seamlessly transmit data to a remote server for expedited processing.
 
+### Models and Training:
 
+Our models, powered by TensorFlow, underwent rigorous training to ensure optimal performance across tasks. We specifically curated and utilized extensive datasets to bolster the accuracy and reliability of facial recognition capabilities.
 
+## 2-2 Detailed Specifications
 
+### Hardware Components:
+- Raspberry Pi 4: Central computing platform for the smart glasses.
+- Buttons: Integrated for intuitive mode and task selection.
+- Camera Module: Enables image and video capture for processing.
 
+### Software Frameworks and Libraries:
+- TensorFlow: Used for model development and training.
+- Custom Software: Developed for user interface and interaction.
 
-# Project report in french
+### Connectivity and Data Transmission:
+- Internet Connectivity: Facilitates data transfer to a remote server.
+- Data Transmission Protocol: Ensures seamless and secure data exchange.
 
-- The project report is written in Latex. Here is the link to overleaf : <a href="https://www.overleaf.com/project/61e4b995b878196c857a475c" target="_blank">Link</a>
+### Model Training and Data Collection:
+- TensorFlow Framework: Employed for model training and optimization.
+- Dataset Gathering: Specifically collected data for facial recognition tasks.
 
-<a href="https://github.com/mohammedAljadd/iEars/tree/main/Project%20report%20in%20Latex" target="_blank">Source files Latex.</a>
+### System Architecture:
+
 
 
 
